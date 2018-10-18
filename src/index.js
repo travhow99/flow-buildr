@@ -10,7 +10,39 @@ class App extends React.Component {
 
   onDragEnd = result => {
     // TO-DO: reorder columns
-  }
+    const { destination, source, draggableId } = result;
+
+    if (!destination) {
+      return;
+    }
+
+    if (
+      destination.droppableId === source.droppableId &&
+      destination.index === source.index
+    ) {
+      return;
+    }
+
+    const column = this.state.columns[source.droppableId];
+    const newPoseIds = Array.from(column.poseIds);
+    newPoseIds.splice(source.index, 1);
+    newPoseIds.splice(destination.index, 0, draggableId);
+
+    const newColumn = {
+      ...column,
+      poseIds: newPoseIds,
+    };
+
+    const newState = {
+      ...this.state,
+      columns: {
+        ...this.state.columns,
+        [newColumn.id]: newColumn,
+      },
+    };
+
+    this.setState(newState);
+  };
 
   render() {
     return (
