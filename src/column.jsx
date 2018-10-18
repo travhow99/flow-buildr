@@ -11,8 +11,10 @@ const Container = styled.div`
 const Title = styled.h3`
   padding: 8px;
 `;
-const TaskList = styled.div`
+const PoseList = styled.div`
   padding: 8px;
+  transition: background-color 0.2s ease;
+  background-color: ${props => (props.isDraggingOver ? 'pink' : 'white')};
 `;
 
 export default class Column extends React.Component {
@@ -21,17 +23,18 @@ export default class Column extends React.Component {
       <Container>
         <Title>{this.props.column.title}</Title>
         <Droppable droppableId={this.props.column.id}>
-          {provided => (
-            <TaskList
+          {(provided, snapshot) => (
+            <PoseList
               ref={provided.innerRef}
               innerRef={provided.innerRef}
               {...provided.droppableProps}
+              isDraggingOver={snapshot.isDraggingOver}
             >
               {this.props.poses.map((pose, index) => (
                 <Pose key={pose.id} pose={pose} index={index} />
               ))}
               {provided.placeholder}
-            </TaskList>
+            </PoseList>
           )}
         </Droppable>
       </Container>
