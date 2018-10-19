@@ -10,6 +10,8 @@ const Container = styled.div`
   background-color: ${props => (props.isDragging ? 'lightblue' : 'white')};
 `;
 
+// Potentially add <Handle > for draghandle, video #8
+
 export default class Pose extends React.Component {
   render() {
     return (

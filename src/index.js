@@ -8,7 +8,25 @@ import Column from './column';
 class App extends React.Component {
   state = initialData;
 
+  onDragStart = () => {
+    document.body.style.color = 'orange';
+    document.body.style.transition = 'background-color 0.2s ease';
+  };
+  // Not changing?
+
+  onDragUpdate = update => {
+    const { destination } = update;
+    const opacity = destination
+      ? destination.index / Object.keys(this.state.poses).length
+      : 0;
+    document.body.style.backgroundColor =  `rgba(153, 141, 217, ${opacity})`;
+  }
+
+// Not changing above, possibly remove?
+
   onDragEnd = result => {
+    document.body.style.color = 'inherit';
+    document.body.style.backgroundColor = 'inherit';
     // TO-DO: reorder columns
     const { destination, source, draggableId } = result;
 
@@ -43,7 +61,7 @@ class App extends React.Component {
 
   render() {
     return (
-      <DragDropContext onDragEnd={this.onDragEnd}>
+      <DragDropContext onDragStart={this.onDragStart} onDragUpdate={this.onDragUpdate} onDragEnd={this.onDragEnd}>
       { this.state.columnOrder.map(columnId => {
       const column = this.state.columns[columnId];
       const poses = column.poseIds.map(poseId => this.state.poses[poseId]);
