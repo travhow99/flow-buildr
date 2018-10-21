@@ -1,3 +1,11 @@
+import React, { Component } from 'react';
+import poseData from './poseData.json';
+
+const refinedData = poseData.map(function(yogaPose){
+  return <li>{yogaPose.sanskrit_name} - {yogaPose.english_name}</li>;
+});
+
+//console.log(Object.entries(poseData));
 
 
 const initialData = {
@@ -22,5 +30,8 @@ const initialData = {
   // Facilitate reordering of the columns
   columnOrder: ['column-1', 'column-2'],
 };
+
+initialData['info'] = Object.assign({}, poseData);
+console.log(initialData);
 
 export default initialData;
