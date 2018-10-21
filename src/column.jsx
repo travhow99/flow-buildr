@@ -37,8 +37,9 @@ export default class Column extends React.Component {
               {...provided.droppableProps}
               isDraggingOver={snapshot.isDraggingOver}
             >
-              {this.props.poses.map((pose, index) => (
+              {this.props.info.map((pose, index) => (
                 <Pose key={pose.id} pose={pose} index={index} />
+                //console.log(pose)
               ))}
               {provided.placeholder}
             </PoseList>

@@ -22,7 +22,7 @@ class App extends React.Component {
   onDragUpdate = update => {
     const { destination } = update;
     const opacity = destination
-      ? destination.index / Object.keys(this.state.poses).length
+      ? destination.index / Object.keys(this.state.info).length
       : 0;
     document.body.style.backgroundColor =  `rgba(153, 141, 217, ${opacity})`;
   }
@@ -100,9 +100,9 @@ class App extends React.Component {
       <Container>
         { this.state.columnOrder.map(columnId => {
         const column = this.state.columns[columnId];
-        const poses = column.poseIds.map(poseId => this.state.poses[poseId]);
+        const info = column.poseIds.map(poseId => this.state.info[poseId]);
 
-        return <Column key={column.id} column={column} poses={poses} />;
+        return <Column key={column.id} column={column} info={info} />;
       })}
     </Container>
     </DragDropContext>

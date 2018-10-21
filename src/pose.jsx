@@ -24,7 +24,7 @@ export default class Pose extends React.Component {
           innerRef={provided.innerRef}
           isDragging={snapshot.isDragging}
         >
-          {this.props.pose.content}
+          {this.props.pose.english_name}
         </Container>
       )}
       </Draggable>
