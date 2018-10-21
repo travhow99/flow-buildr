@@ -1,3 +1,5 @@
+
+
 const initialData = {
   poses: {
     'pose-1': { id: 'pose-1', content: 'Downward Dog'},
@@ -11,9 +13,14 @@ const initialData = {
       title: 'Pose Bank',
       poseIds: ['pose-1', 'pose-2', 'pose-3', 'pose-4'],
     },
+    'column-2': {
+      id: 'column-2',
+      title: 'Sequence',
+      poseIds: [],
+    },
   },
   // Facilitate reordering of the columns
-  columnOrder: ['column-1'],
+  columnOrder: ['column-1', 'column-2'],
 };
 
 export default initialData;

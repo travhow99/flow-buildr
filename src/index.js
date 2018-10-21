@@ -1,9 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import '@atlaskit/css-reset';
+import styled from 'styled-components';
 import { DragDropContext } from 'react-beautiful-dnd';
 import initialData from './initial-data';
 import Column from './column';
+
+const Container = styled.div`
+  display: flex;
+`;
 
 class App extends React.Component {
   state = initialData;
@@ -38,36 +43,68 @@ class App extends React.Component {
       return;
     }
 
-    const column = this.state.columns[source.droppableId];
-    const newPoseIds = Array.from(column.poseIds);
-    newPoseIds.splice(source.index, 1);
-    newPoseIds.splice(destination.index, 0, draggableId);
+    const start = this.state.columns[source.droppableId];
+    const finish = this.state.columns[destination.droppableId];
 
-    const newColumn = {
-      ...column,
-      poseIds: newPoseIds,
+    if (start === finish) {
+      const newPoseIds = Array.from(start.poseIds);
+      newPoseIds.splice(source.index, 1);
+      newPoseIds.splice(destination.index, 0, draggableId);
+
+      const newColumn = {
+        ...start,
+        poseIds: newPoseIds,
+      };
+
+      const newState = {
+        ...this.state,
+        columns: {
+          ...this.state.columns,
+          [newColumn.id]: newColumn,
+        },
+      };
+
+      this.setState(newState);
+      return;
+    }
+
+    // Moving from one list to another
+    const startPoseIds = Array.from(start.poseIds);
+    startPoseIds.splice(source.index, 1);
+    const newStart = {
+      ...start,
+      poseIds: startPoseIds,
+    };
+
+    const finishPoseIds = Array.from(finish.poseIds);
+    finishPoseIds.splice(destination.index, 0, draggableId);
+    const newFinish = {
+      ...finish,
+      poseIds:finishPoseIds,
     };
 
     const newState = {
       ...this.state,
       columns: {
         ...this.state.columns,
-        [newColumn.id]: newColumn,
+        [newStart.id]: newStart,
+        [newFinish.id]: newFinish,
       },
     };
-
     this.setState(newState);
   };
 
   render() {
     return (
       <DragDropContext onDragStart={this.onDragStart} onDragUpdate={this.onDragUpdate} onDragEnd={this.onDragEnd}>
-      { this.state.columnOrder.map(columnId => {
-      const column = this.state.columns[columnId];
-      const poses = column.poseIds.map(poseId => this.state.poses[poseId]);
+      <Container>
+        { this.state.columnOrder.map(columnId => {
+        const column = this.state.columns[columnId];
+        const poses = column.poseIds.map(poseId => this.state.poses[poseId]);
 
-      return <Column key={column.id} column={column} poses={poses} />;
-    })}
+        return <Column key={column.id} column={column} poses={poses} />;
+      })}
+    </Container>
     </DragDropContext>
   );
   }
