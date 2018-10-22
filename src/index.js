@@ -13,6 +13,7 @@ const Container = styled.div`
 class App extends React.Component {
   state = initialData;
 
+
   onDragStart = () => {
     document.body.style.color = 'orange';
     document.body.style.transition = 'background-color 0.2s ease';
@@ -32,6 +33,7 @@ class App extends React.Component {
   onDragEnd = result => {
     document.body.style.color = 'inherit';
     document.body.style.backgroundColor = 'inherit';
+
     // TO-DO: reorder columns
     const { destination, source, draggableId } = result;
 
@@ -95,6 +97,8 @@ class App extends React.Component {
   };
 
   render() {
+    document.body.style.backgroundColor = 'linear-gradient(to bottom right, #fcccff, #845cff);'
+
     return (
       <DragDropContext onDragStart={this.onDragStart} onDragUpdate={this.onDragUpdate} onDragEnd={this.onDragEnd}>
       <Container>
