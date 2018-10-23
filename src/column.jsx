@@ -25,11 +25,14 @@ const PoseList = styled.div`
 `;
 
 export default class Column extends React.Component {
+
   render() {
+
+
     return (
       <Container>
         <Title>{this.props.column.title}</Title>
-        <Droppable droppableId={this.props.column.id}>
+        <Droppable droppableId={this.props.column.id} isDropDisabled={this.props.column.id === 'column-1' ? true : false}>
           {(provided, snapshot) => (
             <PoseList
               ref={provided.innerRef}

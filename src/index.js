@@ -101,14 +101,14 @@ class App extends React.Component {
 
     return (
       <DragDropContext onDragStart={this.onDragStart} onDragUpdate={this.onDragUpdate} onDragEnd={this.onDragEnd}>
-      <Container>
-        { this.state.columnOrder.map(columnId => {
-        const column = this.state.columns[columnId];
-        const info = column.poseIds.map(poseId => this.state.info[poseId]);
+        <Container>
+          { this.state.columnOrder.map(columnId => {
+          const column = this.state.columns[columnId];
+          const info = column.poseIds.map(poseId => this.state.info[poseId]);
 
-        return <Column key={column.id} column={column} info={info} />;
-      })}
-    </Container>
+          return <Column key={column.id} column={column} info={info} />;
+        })}
+      </Container>
     </DragDropContext>
   );
   }
