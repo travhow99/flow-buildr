@@ -10,6 +10,20 @@ const Container = styled.div`
   background-color: ${props => (props.isDragging ? 'lightblue' : 'white')};
 `;
 
+const Sanskrit = styled.div`
+  font-size: 10px;
+  font-style: italic;
+`;
+
+const PosePic = styled.div`
+  float: right;
+  width: 25px;
+  height: 25px;
+  padding: 4px;
+  border: 1px #c7c3c3 solid;
+  border-radius: 50%;
+`;
+
 // Potentially add <Handle > for draghandle, video #8
 
 export default class Pose extends React.Component {
@@ -25,6 +39,12 @@ export default class Pose extends React.Component {
           isDragging={snapshot.isDragging}
         >
           {this.props.pose.english_name}
+          <PosePic>
+            <img src={this.props.pose.img_url} />
+          </PosePic>
+          <Sanskrit>
+            {this.props.pose.sanskrit_name}
+          </Sanskrit>
         </Container>
       )}
       </Draggable>

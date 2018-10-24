@@ -6,15 +6,17 @@ import Pose from './pose';
 const Container = styled.div`
   margin: 8px;
   border: 1px solid lightgrey;
-  border-radiius: 2px;
+  border-radius: 2px;
   width: 220px;
-
   display: flex;
   flex-direction: column;
+  max-height: 80vh;
 `;
 
 const Title = styled.h3`
   padding: 8px;
+  box-shadow: 0px 1px 1px 0px black;
+  z-index: 1;
 `;
 const PoseList = styled.div`
   padding: 8px;
@@ -22,6 +24,7 @@ const PoseList = styled.div`
   background-color: ${props => (props.isDraggingOver ? 'pink' : 'white')};
   flex-grow: 1;
   min-height: 100px;
+  overflow-y: auto;
 `;
 
 export default class Column extends React.Component {
@@ -42,7 +45,6 @@ export default class Column extends React.Component {
             >
               {this.props.info.map((pose, index) => (
                 <Pose key={pose.id} pose={pose} index={index} />
-                //console.log(pose)
               ))}
               {provided.placeholder}
             </PoseList>
