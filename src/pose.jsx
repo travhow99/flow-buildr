@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Draggable } from 'react-beautiful-dnd';
+import { FaInfoCircle } from 'react-icons/fa';
 
 const Container = styled.div`
   border: 1px solid lightgrey;
@@ -21,7 +22,16 @@ const PosePic = styled.div`
   height: 25px;
   padding: 4px;
   border: 1px #c7c3c3 solid;
+  background-color: #c7c3c3;
   border-radius: 50%;
+`;
+
+const Info = styled.span`
+  float: right;
+  width: 15px;
+  height: 15px;
+  color: blue;
+
 `;
 
 // Potentially add <Handle > for draghandle, video #8
@@ -42,6 +52,9 @@ export default class Pose extends React.Component {
           <PosePic>
             <img src={this.props.pose.img_url} />
           </PosePic>
+          <div>
+            <FaInfoCircle style={{ color: "lightblue", float: "left" }} />
+          </div>
           <Sanskrit>
             {this.props.pose.sanskrit_name}
           </Sanskrit>
