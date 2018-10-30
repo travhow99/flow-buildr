@@ -15,20 +15,20 @@ class App extends React.Component {
 
 
   onDragStart = () => {
-    document.body.style.color = 'orange';
-    document.body.style.transition = 'background-color 0.2s ease';
+    // document.body.style.color = 'orange';
+    // document.body.style.transition = 'background-color 0.2s ease';
   };
-  // Not changing?
+
 
   onDragUpdate = update => {
-    const { destination } = update;
-    const opacity = destination
+    // const { destination } = update;
+    /* const opacity = destination
       ? destination.index / Object.keys(this.state.info).length
-      : 0;
-    document.body.style.backgroundColor =  `rgba(153, 141, 217, ${opacity})`;
+      : 0; */
+    // document.body.style.backgroundColor =  `rgba(153, 141, 217, ${opacity})`;
   }
 
-// Not changing above, possibly remove?
+
 
   onDragEnd = result => {
     document.body.style.color = 'inherit';
@@ -71,12 +71,13 @@ class App extends React.Component {
     }
 
     // Moving from one list to another
+    const defaultPoseIds = Array.from(start.poseIds);
     const startPoseIds = Array.from(start.poseIds);
     startPoseIds.splice(source.index, 1);
     const newStart = {
       ...start,
-      poseIds: startPoseIds,
-    };
+      poseIds: startPoseIds, // Should be defaultPoseIds, but need to create new element on drop
+    }; // Use https://github.com/atlassian/react-beautiful-dnd/issues/216 for solution
 
     const finishPoseIds = Array.from(finish.poseIds);
     finishPoseIds.splice(destination.index, 0, draggableId);

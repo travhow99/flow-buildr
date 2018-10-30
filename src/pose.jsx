@@ -38,6 +38,8 @@ const Info = styled.span`
 
 export default class Pose extends React.Component {
   render() {
+    const url = urlGenerator(this.props.pose.english_name);
+    console.log(url);
     return (
       <Draggable draggableId={this.props.pose.id} index={this.props.index}>
       {(provided, snapshot) => (
@@ -53,7 +55,9 @@ export default class Pose extends React.Component {
             <img src={this.props.pose.img_url} />
           </PosePic>
           <div>
-            <FaInfoCircle style={{ color: "lightblue", float: "left" }} />
+            <a href={url} target="_blank">
+              <FaInfoCircle style={{ color: "lightblue", float: "left" }} />
+            </a>
           </div>
           <Sanskrit>
             {this.props.pose.sanskrit_name}
@@ -63,4 +67,15 @@ export default class Pose extends React.Component {
       </Draggable>
     );
   }
+}
+
+
+
+function urlGenerator(pose) {
+  const baseUrl = 'https://www.yogajournal.com/poses/search?query=';
+
+  let corrected = pose.replace(' ', '%20');
+  let finalUrl = baseUrl + corrected;
+  return finalUrl;
+
 }

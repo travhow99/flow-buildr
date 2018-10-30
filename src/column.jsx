@@ -21,11 +21,10 @@ const Title = styled.h3`
 const PoseList = styled.div`
   padding: 8px;
   transition: background-color 0.2s ease;
-  background-color: ${props => (props.isDraggingOver ? 'pink' : 'white')};
   flex-grow: 1;
   min-height: 100px;
   overflow-y: auto;
-`;
+`; //  background-color: ${props => (props.isDraggingOver ? 'pink' : 'white')};
 
 export default class Column extends React.Component {
 
