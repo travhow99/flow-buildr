@@ -39,7 +39,7 @@ const Info = styled.span`
 export default class Pose extends React.Component {
   render() {
     const url = urlGenerator(this.props.pose.english_name);
-    console.log(url);
+    
     return (
       <Draggable draggableId={this.props.pose.id} index={this.props.index}>
       {(provided, snapshot) => (

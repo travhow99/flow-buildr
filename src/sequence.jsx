@@ -33,8 +33,8 @@ export default class Column extends React.Component {
 
     return (
       <Container>
-        <Title>{this.props.column.title}</Title>
-        <Droppable droppableId={this.props.column.id} isDropDisabled={this.props.column.id === 'column-1' ? true : false}>
+        <Title>test</Title>
+        <Droppable droppableId={this.props}>
           {(provided, snapshot) => (
             <PoseList
               ref={provided.innerRef}
@@ -42,9 +42,7 @@ export default class Column extends React.Component {
               {...provided.droppableProps}
               isDraggingOver={snapshot.isDraggingOver}
             >
-              {this.props.info.map((pose, index) => (
-                <Pose key={pose.id} pose={pose} index={index} />
-              ))}
+
               {provided.placeholder}
             </PoseList>
           )}
