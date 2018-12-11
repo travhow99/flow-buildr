@@ -11,6 +11,12 @@ const Container = styled.div`
   background-color: ${props => (props.isDragging ? 'lightblue' : 'white')};
 `;
 
+const Clone = styled(Container)`
+  + div {
+    display: none!important;
+  }
+`;
+
 const Sanskrit = styled.div`
   font-size: 10px;
   font-style: italic;
@@ -39,30 +45,48 @@ const Info = styled.span`
 export default class Pose extends React.Component {
   render() {
     const url = urlGenerator(this.props.pose.english_name);
-    
+
     return (
       <Draggable draggableId={this.props.pose.id} index={this.props.index}>
       {(provided, snapshot) => (
-        <Container
-          {...provided.draggableProps}
-          {...provided.dragHandleProps}
-          ref={provided.innerRef}
-          innerRef={provided.innerRef}
-          isDragging={snapshot.isDragging}
-        >
-          {this.props.pose.english_name}
-          <PosePic>
-            <img src={this.props.pose.img_url} />
-          </PosePic>
-          <div>
-            <a href={url} target="_blank">
-              <FaInfoCircle style={{ color: "lightblue", float: "left" }} />
-            </a>
-          </div>
-          <Sanskrit>
-            {this.props.pose.sanskrit_name}
-          </Sanskrit>
-        </Container>
+        <React.Fragment>
+          <Container
+            {...provided.draggableProps}
+            {...provided.dragHandleProps}
+            ref={provided.innerRef}
+            innerRef={provided.innerRef}
+            isDragging={snapshot.isDragging}
+          >
+            {this.props.pose.english_name}
+            <PosePic>
+              <img src={this.props.pose.img_url} />
+            </PosePic>
+            <div>
+              <a href={url} target="_blank">
+                <FaInfoCircle style={{ color: "lightblue", float: "left" }} />
+              </a>
+            </div>
+            <Sanskrit>
+              {this.props.pose.sanskrit_name}
+            </Sanskrit>
+          </Container>
+          {snapshot.isDragging && (
+            <Clone>
+              {this.props.pose.english_name}
+              <PosePic>
+                <img src={this.props.pose.img_url} />
+              </PosePic>
+              <div>
+                <a href={url} target="_blank">
+                  <FaInfoCircle style={{ color: "lightblue", float: "left" }} />
+                </a>
+              </div>
+              <Sanskrit>
+                {this.props.pose.sanskrit_name}
+              </Sanskrit>
+            </Clone>
+          )}
+        </React.Fragment>
       )}
       </Draggable>
     );
