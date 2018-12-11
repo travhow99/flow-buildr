@@ -68,8 +68,17 @@ class App extends React.Component {
 
       this.setState(newState);
       return;
+    } else {
+      this.setState({
+      [destination.droppableId]: copy(
+          start,
+          this.state[destination.droppableId],
+          start,
+          finish
+          )
+      });
     }
-
+/*
     // Moving from one list to another
     const defaultPoseIds = Array.from(start.poseIds);
     const startPoseIds = Array.from(start.poseIds);
@@ -95,6 +104,7 @@ class App extends React.Component {
       },
     };
     this.setState(newState);
+    */
   };
 
   render() {

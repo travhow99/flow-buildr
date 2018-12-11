@@ -9,12 +9,6 @@ const refinedData = poseData.map(function(yogaPose){
 
 
 const initialData = {
-  poses: {
-    'pose-1': { id: 'pose-1', content: 'Downward Dog'},
-    'pose-2': { id: 'pose-2', content: 'Upward Dog'},
-    'pose-3': { id: 'pose-3', content: 'Chaturanga'},
-    'pose-4': { id: 'pose-4', content: 'Tabeltop'},
-  },
   columns: {
     'column-1': {
       id: 'column-1',
