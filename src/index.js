@@ -10,6 +10,29 @@ const Container = styled.div`
   display: flex;
 `;
 
+/** Need proper `source` & `destination` */
+
+/**
+ * Moves an item from one list to another list.
+ */
+const copy = (source, destination, droppableSource, droppableDestination) => {
+  console.log(source, destination);
+
+    // Array of PoseIDs in original column
+    const sourceClone = Array.from(source.poseIds);
+
+    if (!destination.poseIds) {
+      destination.poseIds = [];
+    }
+    console.log(destination.poseIds);
+
+    //const destClone = Array.from(destination.poseIds);
+    const item = sourceClone[droppableSource.index];
+
+    //destClone.splice(droppableDestination.index, 0, { ...item, id: 'test' });
+    //return destClone;
+};
+
 class App extends React.Component {
   state = initialData;
 
@@ -26,16 +49,48 @@ class App extends React.Component {
       ? destination.index / Object.keys(this.state.info).length
       : 0; */
     // document.body.style.backgroundColor =  `rgba(153, 141, 217, ${opacity})`;
-  }
+  };
 
 
 
   onDragEnd = result => {
+    const { source, destination } = result;
+    // Goal: Place copy of dropped in column-2
+
+
+    // dropped outside the list
+    if (!destination) {
+        return;
+    }
+
+    const col = this.state.columns[destination.droppableId];
+
+    // Set this.state to state of origin
+    console.log(destination.droppableId);
+    console.log(col.poseIds);
+    console.log(this.state.columns['column-1']);
+
+
+
+  };
+
+
+
+
+
+
+    /*
+    const newer = React.cloneElement(
+      result
+    );
+    console.log(newer);
+
     document.body.style.color = 'inherit';
     document.body.style.backgroundColor = 'inherit';
 
     // TO-DO: reorder columns
-    const { destination, source, draggableId } = result;
+    const { source, destination, draggableId } = result;
+    console.log(source, destination, draggableId);
 
     if (!destination) {
       return;
@@ -48,6 +103,11 @@ class App extends React.Component {
     const start = this.state.columns[source.droppableId];
     const finish = this.state.columns[destination.droppableId];
 
+  };
+  */
+
+    // If components are reordered in same column
+    /*
     if (start === finish) {
       const newPoseIds = Array.from(start.poseIds);
       newPoseIds.splice(source.index, 1);
@@ -69,15 +129,20 @@ class App extends React.Component {
       this.setState(newState);
       return;
     } else {
+    */
+
+
+      /* Let's do this without variables
+      console.log(destination);
       this.setState({
       [destination.droppableId]: copy(
           start,
-          this.state[destination.droppableId],
-          start,
-          finish
+          [destination.droppableId],
+          source,
+          destination
           )
       });
-    }
+    }*/
 /*
     // Moving from one list to another
     const defaultPoseIds = Array.from(start.poseIds);
@@ -105,7 +170,7 @@ class App extends React.Component {
     };
     this.setState(newState);
     */
-  };
+
 
   render() {
     document.body.style.backgroundColor = 'linear-gradient(to bottom right, #fcccff, #845cff);'

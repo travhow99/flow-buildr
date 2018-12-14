@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Draggable } from 'react-beautiful-dnd';
 import { FaInfoCircle } from 'react-icons/fa';
+import uuid from 'uuid/v4';
 
 const Container = styled.div`
   border: 1px solid lightgrey;
@@ -47,7 +48,7 @@ export default class Pose extends React.Component {
     const url = urlGenerator(this.props.pose.english_name);
 
     return (
-      <Draggable draggableId={this.props.pose.id} index={this.props.index}>
+      <Draggable draggableId={uuid()} index={this.props.index}>
       {(provided, snapshot) => (
         <React.Fragment>
           <Container
