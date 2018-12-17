@@ -34,7 +34,7 @@ export default class Column extends React.Component {
     return (
       <Container>
         <Title>test</Title>
-        <Droppable droppableId={this.props}>
+        <Droppable droppableId='column-2'>
           {(provided, snapshot) => (
             <PoseList
               ref={provided.innerRef}
