@@ -13,6 +13,21 @@ const Container = styled.div`
 
 /** Need proper `source` & `destination` */
 
+/* Here is ideal new pose data
+  {
+  "pose": {
+    "id": 1,
+    "sanskrit_name": "Navasana",
+    "english_name": "Boat",
+    "img_url": "https://www.dropbox.com/s/4m64ztxkj8a4dab/boatstraightlegs.svg?raw=1",
+    "user_id": 1,
+    "created_at": "2016-01-14T22:23:39.902Z",
+    "updated_at": "2016-01-14T22:23:39.902Z"
+  },
+  "index": 0
+}
+*/
+
 /**
  * Moves an item from one list to another list.
  */
@@ -67,32 +82,40 @@ class App extends React.Component {
     const col = this.state.columns[destination.droppableId];
     //console.log(col, source, destination);
 
-    // Set this.state to state of origin
-    //console.log(source);
-    if (!col.poseIds) {
-      col.poseIds = [];
-    }
     //col.poseIds.push(source.index);
-    console.log(this.state.columns['column-2']);
-    console.log(col.poseIds);
 
 
 
     const start = this.state.columns[source.droppableId];
     const finish = this.state.columns[destination.droppableId];
-    console.log(start, finish);
+
 
 
     const finishPoseIds = Array.from(finish.poseIds);
-    finishPoseIds.splice(destination.index, 0, draggableId);
+
+    const poseIndex = source.index + 1;
+    finishPoseIds.splice(destination.index, 0, poseIndex);
+
+
     const newFinish = {
       ...finish,
       poseIds:finishPoseIds,
     };
+    /* New state for column-2 */
+
 
     const newState = {
       ...this.state,
+      columns: {
+        ...this.state.columns,
+
+        [newFinish.id]: newFinish,
+      },
     };
+    this.setState(newState);
+
+  };
+
 
 
 
@@ -127,7 +150,6 @@ class App extends React.Component {
         };
         this.setState(newState);
         */
-  };
 
 
 
