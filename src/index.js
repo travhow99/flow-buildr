@@ -6,6 +6,7 @@ import { DragDropContext } from 'react-beautiful-dnd';
 import initialData from './initial-data';
 import Column from './column';
 import Sequence from './sequence';
+import uuid from 'uuid/v4';
 
 const Container = styled.div`
   display: flex;
@@ -53,9 +54,10 @@ class App extends React.Component {
   state = initialData;
 
 
+
   onDragStart = () => {
-    // document.body.style.color = 'orange';
-    // document.body.style.transition = 'background-color 0.2s ease';
+    // Use this to determine if <Clone /> is needed
+    console.log('starting');
   };
 
 
@@ -79,6 +81,12 @@ class App extends React.Component {
         return;
     }
 
+    if (destination.droppableId === source.droppableId && destination.index === source.index) {
+      return;
+    }
+
+    console.log(source, destination);
+
     const col = this.state.columns[destination.droppableId];
     //console.log(col, source, destination);
 
@@ -89,102 +97,35 @@ class App extends React.Component {
     const start = this.state.columns[source.droppableId];
     const finish = this.state.columns[destination.droppableId];
 
+    // If moving from bank to flow
+    if (start !== finish) {
+      const finishPoseIds = Array.from(finish.poseIds);
 
+      const poseIndex = source.index + 1;
+      finishPoseIds.splice(destination.index, 0, poseIndex);
 
-    const finishPoseIds = Array.from(finish.poseIds);
+      console.log(finishPoseIds);
 
-    const poseIndex = source.index + 1;
-    finishPoseIds.splice(destination.index, 0, poseIndex);
+      const newFinish = {
+        ...finish,
+        poseIds:finishPoseIds,
+        //info: this.poseIds
+      };
+      /* New state for column-2 */
+      console.log(newFinish);
 
-
-    const newFinish = {
-      ...finish,
-      poseIds:finishPoseIds,
-    };
-    /* New state for column-2 */
-
-
-    const newState = {
-      ...this.state,
-      columns: {
-        ...this.state.columns,
-
-        [newFinish.id]: newFinish,
-      },
-    };
-    this.setState(newState);
-
-  };
-
-
-
-
-
-
-
-
-/*
-        // Moving from one list to another
-        const defaultPoseIds = Array.from(start.poseIds);
-        const startPoseIds = Array.from(start.poseIds);
-        startPoseIds.splice(source.index, 1);
-        const newStart = {
-          ...start,
-          poseIds: startPoseIds, // Should be defaultPoseIds, but need to create new element on drop
-        }; // Use https://github.com/atlassian/react-beautiful-dnd/issues/216 for solution
-
-        const finishPoseIds = Array.from(finish.poseIds);
-        finishPoseIds.splice(destination.index, 0, draggableId);
-        const newFinish = {
-          ...finish,
-          poseIds:finishPoseIds,
-        };
-
-        const newState = {
-          ...this.state,
-          columns: {
-            ...this.state.columns,
-            [newStart.id]: newStart,
-            [newFinish.id]: newFinish,
-          },
-        };
-        this.setState(newState);
-        */
-
-
-
-
-
-
-    /*
-    const newer = React.cloneElement(
-      result
-    );
-    console.log(newer);
-
-    document.body.style.color = 'inherit';
-    document.body.style.backgroundColor = 'inherit';
-
-    // TO-DO: reorder columns
-    const { source, destination, draggableId } = result;
-    console.log(source, destination, draggableId);
-
-    if (!destination) {
-      return;
+      const newState = {
+        ...this.state,
+        columns: {
+          ...this.state.columns,
+          // Dynamic object key
+          [newFinish.id]: newFinish,
+        },
+      };
+      this.setState(newState);
     }
 
-    if (destination.droppableId === source.droppableId && destination.index === source.index) {
-      return;
-    }
-
-    const start = this.state.columns[source.droppableId];
-    const finish = this.state.columns[destination.droppableId];
-
-  };
-  */
-
-    // If components are reordered in same column
-    /*
+    // If reordering flow
     if (start === finish) {
       const newPoseIds = Array.from(start.poseIds);
       newPoseIds.splice(source.index, 1);
@@ -205,49 +146,9 @@ class App extends React.Component {
 
       this.setState(newState);
       return;
-    } else {
-    */
+    }
 
-
-      /* Let's do this without variables
-      console.log(destination);
-      this.setState({
-      [destination.droppableId]: copy(
-          start,
-          [destination.droppableId],
-          source,
-          destination
-          )
-      });
-    }*/
-/*
-    // Moving from one list to another
-    const defaultPoseIds = Array.from(start.poseIds);
-    const startPoseIds = Array.from(start.poseIds);
-    startPoseIds.splice(source.index, 1);
-    const newStart = {
-      ...start,
-      poseIds: startPoseIds, // Should be defaultPoseIds, but need to create new element on drop
-    }; // Use https://github.com/atlassian/react-beautiful-dnd/issues/216 for solution
-
-    const finishPoseIds = Array.from(finish.poseIds);
-    finishPoseIds.splice(destination.index, 0, draggableId);
-    const newFinish = {
-      ...finish,
-      poseIds:finishPoseIds,
-    };
-
-    const newState = {
-      ...this.state,
-      columns: {
-        ...this.state.columns,
-        [newStart.id]: newStart,
-        [newFinish.id]: newFinish,
-      },
-    };
-    this.setState(newState);
-    */
-
+  };
 
   render() {
     document.body.style.backgroundColor = 'linear-gradient(to bottom right, #fcccff, #845cff);'
@@ -256,24 +157,14 @@ class App extends React.Component {
     <DragDropContext onDragStart={this.onDragStart} onDragUpdate={this.onDragUpdate} onDragEnd={this.onDragEnd}>
       <Container>
         { this.state.columnOrder.map(columnId => {
+          const column = this.state.columns[columnId];
+          const info = column.poseIds.map(poseId => this.state.info[poseId]);
+
           if (columnId === 'column-1') {
-            const column = this.state.columns[columnId];
-            console.log(column);
-            const info = column.poseIds.map(poseId => this.state.info[poseId]);
-
             return <Column key={column.id} column={column} info={info} />;
-          }
-        })}
-        { this.state.columnOrder.map(columnId => {
-          if (columnId === 'column-2') {
-            const column = this.state.columns[columnId];
-            console.log(column);
-            if (column.poseIds) {
-              const info = column.poseIds.map(poseId => this.state.info[poseId]);
-
+          } else if (columnId === 'column-2') {
               return <Sequence key={column.id} column={column} info={info} />;
             }
-          }
         })}
       </Container>
     </DragDropContext>

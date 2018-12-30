@@ -4,6 +4,7 @@ import { Draggable } from 'react-beautiful-dnd';
 import { FaInfoCircle } from 'react-icons/fa';
 import uuid from 'uuid/v4';
 
+
 const Container = styled.div`
   border: 1px solid lightgrey;
   border-radius: 2px;
@@ -43,22 +44,26 @@ const Info = styled.span`
 
 // Potentially add <Handle > for draghandle, video #8
 
+/* Pull <Clone > out to its own component to be conditionally renderd */
+
 export default class Pose extends React.Component {
   render() {
     const url = urlGenerator(this.props.pose.english_name);
 
+    const parent = this.props.parent;
+
+
+
     return (
-      <Draggable draggableId={uuid()} index={this.props.index}>
+      <Draggable draggableId={this.props.pose.id} index={this.props.index} >
       {(provided, snapshot) => (
         <React.Fragment>
           <Container
             {...provided.draggableProps}
             {...provided.dragHandleProps}
             ref={provided.innerRef}
-            innerRef={provided.innerRef}
-            isDragging={snapshot.isDragging}
           >
-            {this.props.pose.english_name}
+          {this.props.pose.english_name}
             <PosePic>
               <img src={this.props.pose.img_url} />
             </PosePic>
@@ -71,13 +76,14 @@ export default class Pose extends React.Component {
               {this.props.pose.sanskrit_name}
             </Sanskrit>
           </Container>
-          {snapshot.isDragging && (
+          {parent === 'column-1' && snapshot.isDragging && (
             <Clone>
               {this.props.pose.english_name}
               <PosePic>
                 <img src={this.props.pose.img_url} />
               </PosePic>
               <div>
+              CLONE
                 <a href={url} target="_blank">
                   <FaInfoCircle style={{ color: "lightblue", float: "left" }} />
                 </a>
@@ -87,6 +93,7 @@ export default class Pose extends React.Component {
               </Sanskrit>
             </Clone>
           )}
+
         </React.Fragment>
       )}
       </Draggable>
@@ -94,9 +101,7 @@ export default class Pose extends React.Component {
   }
 }
 
-
-
-function urlGenerator(pose) {
+const urlGenerator = (pose) => {
   const baseUrl = 'https://www.yogajournal.com/poses/search?query=';
 
   let corrected = pose.replace(' ', '%20');
