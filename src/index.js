@@ -95,7 +95,6 @@ class App extends React.Component {
       const finishPoseIds = Array.from(finish.poseIds);
 
       const poseIndex = source.index + 1;
-      finishPoseIds.splice(destination.index, 0, poseIndex);
 
       console.log(finish, finishPoseIds);
 
@@ -104,7 +103,10 @@ class App extends React.Component {
       const duplicate = {...this.state.info[poseIndex]};
       console.log(duplicate);
       duplicate.id = uuid();
+      duplicate.originalId = poseIndex;
       console.log(duplicate);
+
+      finishPoseIds.splice(destination.index, 0, duplicate.id);
 
       // Set flowInfo key by getting last key
       let flowKey = 0;
@@ -143,7 +145,7 @@ class App extends React.Component {
         ...this.state,
         flowInfo: {
           ...this.state.flowInfo,
-          [poseIndex]: duplicate,
+          [duplicate.id]: duplicate,
         },
         columns: {
           ...this.state.columns,
