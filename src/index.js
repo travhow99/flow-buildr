@@ -101,15 +101,29 @@ class App extends React.Component {
 
       // Use poseIndex to get full object of this.state.info {poseIndex}
 
-      const duplicate = this.state.info[poseIndex];
+      const duplicate = {...this.state.info[poseIndex]};
       console.log(duplicate);
       duplicate.id = uuid();
       console.log(duplicate);
 
+      // Set flowInfo key by getting last key
+      let flowKey = 0;
+      console.log(Object.keys(flow));
+      if (Object.keys(flow).length === 0) {
+        flowKey = 0;
+      } else {
+        const length = Object.keys(flow).length;
+        flowKey = length;
+      }
 
       const newFinish = {
         ...finish,
         poseIds:finishPoseIds,
+        /*
+        initialPosition: {
+          ...finish.initialPosition,
+          [flowKey]: flowKey
+        },*/
         //info: this.poseIds
       };
       console.log(newFinish);
@@ -118,21 +132,8 @@ class App extends React.Component {
       currentFlow.splice(destination.index, 0, duplicate);
       console.log(currentFlow);
 */
-      // Set flowInfo key by getting last key
-      let flowKey = 0;
-      console.log(Object.keys(flow));
-      if (Object.keys(flow).length === 0) {
-        flowKey = 0;
-      } else {
-        const length = Object.keys(flow).length;
 
-        flowKey = length;
-
-      }
       console.log(flowKey, duplicate);
-
-
-
 
       /* New state for column-2 */
       console.log(this.state);
@@ -142,7 +143,7 @@ class App extends React.Component {
         ...this.state,
         flowInfo: {
           ...this.state.flowInfo,
-          [flowKey]: duplicate,
+          [poseIndex]: duplicate,
         },
         columns: {
           ...this.state.columns,
@@ -194,7 +195,8 @@ class App extends React.Component {
           if (columnId === 'column-1') {
             return <Column key={column.id} column={column} info={info} />;
           } else if (columnId === 'column-2') {
-              return <Sequence key={column.id} column={column} info={info} />;
+            console.log(column.poseIds);
+              return <Sequence key={column.id} column={column} info={flowInfo} />;
             }
         })}
       </Container>
