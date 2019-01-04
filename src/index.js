@@ -73,8 +73,6 @@ class App extends React.Component {
   onDragEnd = result => {
     const { source, destination, draggableId } = result;
     // Goal: Place copy of dropped in column-2
-    console.log(source, draggableId);
-
 
     // dropped outside the list
     if (!destination) {
@@ -101,14 +99,37 @@ class App extends React.Component {
 
       console.log(finish, finishPoseIds);
 
+      // Use poseIndex to get full object of this.state.info {poseIndex}
+
+      const duplicate = this.state.info[poseIndex];
+      console.log(duplicate);
+      duplicate.id = uuid();
+      console.log(duplicate);
+
+
       const newFinish = {
         ...finish,
         poseIds:finishPoseIds,
         //info: this.poseIds
       };
-
+      console.log(newFinish);
+/*
       const currentFlow = Array.from(flow);
-      currentFlow.splice(destination.index, 0, uuid());
+      currentFlow.splice(destination.index, 0, duplicate);
+      console.log(currentFlow);
+*/
+      // Set flowInfo key by getting last key
+      let flowKey = 0;
+      console.log(Object.keys(flow));
+      if (Object.keys(flow).length === 0) {
+        flowKey = 0;
+      } else {
+        const length = Object.keys(flow).length;
+
+        flowKey = length;
+
+      }
+      console.log(flowKey, duplicate);
 
 
 
@@ -116,10 +137,12 @@ class App extends React.Component {
       /* New state for column-2 */
       console.log(this.state);
 
+
       const newState = {
         ...this.state,
         flowInfo: {
-          currentFlow,
+          ...this.state.flowInfo,
+          [flowKey]: duplicate,
         },
         columns: {
           ...this.state.columns,
@@ -128,6 +151,7 @@ class App extends React.Component {
         },
       };
       this.setState(newState);
+      return;
     }
 
     // If reordering flow
@@ -162,8 +186,10 @@ class App extends React.Component {
     <DragDropContext onDragStart={this.onDragStart} onDragUpdate={this.onDragUpdate} onDragEnd={this.onDragEnd}>
       <Container>
         { this.state.columnOrder.map(columnId => {
+          console.log(this.state);
           const column = this.state.columns[columnId];
-          const info = column.poseIds.map(poseId => this.state.info[poseId]);
+          let info = column.poseIds.map(poseId => this.state.info[poseId]);
+          let flowInfo = column.poseIds.map(poseId => this.state.flowInfo[poseId]);
 
           if (columnId === 'column-1') {
             return <Column key={column.id} column={column} info={info} />;
