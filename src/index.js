@@ -57,7 +57,6 @@ class App extends React.Component {
 
   onDragStart = () => {
     // Use this to determine if <Clone /> is needed
-    console.log('starting');
   };
 
 
@@ -74,6 +73,7 @@ class App extends React.Component {
   onDragEnd = result => {
     const { source, destination, draggableId } = result;
     // Goal: Place copy of dropped in column-2
+    console.log(source, draggableId);
 
 
     // dropped outside the list
@@ -85,17 +85,12 @@ class App extends React.Component {
       return;
     }
 
-    console.log(source, destination);
-
-    const col = this.state.columns[destination.droppableId];
-    //console.log(col, source, destination);
-
-    //col.poseIds.push(source.index);
-
-
-
     const start = this.state.columns[source.droppableId];
     const finish = this.state.columns[destination.droppableId];
+    const flow = this.state.flowInfo;
+    console.log(start);
+    console.log(finish);
+    console.log(flow);
 
     // If moving from bank to flow
     if (start !== finish) {
@@ -104,18 +99,28 @@ class App extends React.Component {
       const poseIndex = source.index + 1;
       finishPoseIds.splice(destination.index, 0, poseIndex);
 
-      console.log(finishPoseIds);
+      console.log(finish, finishPoseIds);
 
       const newFinish = {
         ...finish,
         poseIds:finishPoseIds,
         //info: this.poseIds
       };
+
+      const currentFlow = Array.from(flow);
+      currentFlow.splice(destination.index, 0, uuid());
+
+
+
+
       /* New state for column-2 */
-      console.log(newFinish);
+      console.log(this.state);
 
       const newState = {
         ...this.state,
+        flowInfo: {
+          currentFlow,
+        },
         columns: {
           ...this.state.columns,
           // Dynamic object key
@@ -151,7 +156,7 @@ class App extends React.Component {
   };
 
   render() {
-    document.body.style.backgroundColor = 'linear-gradient(to bottom right, #fcccff, #845cff);'
+
 
     return (
     <DragDropContext onDragStart={this.onDragStart} onDragUpdate={this.onDragUpdate} onDragEnd={this.onDragEnd}>

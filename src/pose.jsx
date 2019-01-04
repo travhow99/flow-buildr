@@ -83,7 +83,6 @@ export default class Pose extends React.Component {
                 <img src={this.props.pose.img_url} />
               </PosePic>
               <div>
-              CLONE
                 <a href={url} target="_blank">
                   <FaInfoCircle style={{ color: "lightblue", float: "left" }} />
                 </a>
