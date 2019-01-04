@@ -30,20 +30,20 @@ export default class Column extends React.Component {
 
   render() {
 // Create second <Droppable /> for sequence
+  console.log(this.props.info);
 
     return (
       <Container>
         <Title>{this.props.column.title}</Title>
-        <Droppable droppableId={this.props.column.id} isDropDisabled={this.props.column.id === 'column-1' ? true : false}>
+        <Droppable droppableId='column-1' isDropDisabled={true}>
           {(provided, snapshot) => (
             <PoseList
               ref={provided.innerRef}
-              innerRef={provided.innerRef}
               {...provided.droppableProps}
               isDraggingOver={snapshot.isDraggingOver}
             >
               {this.props.info.map((pose, index) => (
-                <Pose key={pose.id} pose={pose} index={index} />
+                <Pose key={pose.id} pose={pose} index={index} parent='column-1'/>
               ))}
               {provided.placeholder}
             </PoseList>
