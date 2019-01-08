@@ -11,7 +11,8 @@ const Container = styled.div`
   width: 280px;
   display: flex;
   flex-direction: column;
-  max-height: 80vh;
+  height: 80vh;
+  min-height: 600px;
 `;
 
 const Title = styled.h3`

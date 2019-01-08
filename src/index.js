@@ -12,48 +12,19 @@ const Container = styled.div`
   display: flex;
 `;
 
-/** Need proper `source` & `destination` */
+// TO DO 1/4/19
+// Render <Pose /> with addButton
+  // click to append to bottom of flow
+// Multiply option
+  // ie "shiva squat x3"
+// Group option? Sun A, Sun B
+// Save Option
+  // Saves Current Flow, title it
+  // Allow for opening and editing saved flows
 
-/* Here is ideal new pose data
-  {
-  "pose": {
-    "id": 1,
-    "sanskrit_name": "Navasana",
-    "english_name": "Boat",
-    "img_url": "https://www.dropbox.com/s/4m64ztxkj8a4dab/boatstraightlegs.svg?raw=1",
-    "user_id": 1,
-    "created_at": "2016-01-14T22:23:39.902Z",
-    "updated_at": "2016-01-14T22:23:39.902Z"
-  },
-  "index": 0
-}
-*/
-
-/**
- * Moves an item from one list to another list.
- */
-const copy = (source, destination, droppableSource, droppableDestination) => {
-  console.log(source, destination);
-
-    // Array of PoseIDs in original column
-    const sourceClone = Array.from(source.poseIds);
-
-    if (!destination.poseIds) {
-      destination.poseIds = [];
-    }
-    console.log(destination.poseIds);
-
-    //const destClone = Array.from(destination.poseIds);
-    const item = sourceClone[droppableSource.index];
-
-    //destClone.splice(droppableDestination.index, 0, { ...item, id: 'test' });
-    //return destClone;
-};
 
 class App extends React.Component {
   state = initialData;
-
-
 
   onDragStart = () => {
     // Use this to determine if <Clone /> is needed
