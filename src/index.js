@@ -6,6 +6,7 @@ import { DragDropContext } from 'react-beautiful-dnd';
 import initialData from './initial-data';
 import Column from './column';
 import Sequence from './sequence';
+import Dashboard from './dashboard';
 import uuid from 'uuid/v4';
 
 const Container = styled.div`
@@ -17,6 +18,9 @@ const Container = styled.div`
   // click to append to bottom of flow
 // Multiply option
   // ie "shiva squat x3"
+// Remove option from <Sequence />
+// Templates
+  // Sculpt, c1, c2 etc.
 // Group option? Sun A, Sun B
 // Save Option
   // Saves Current Flow, title it
@@ -157,23 +161,26 @@ class App extends React.Component {
 
 
     return (
-    <DragDropContext onDragStart={this.onDragStart} onDragUpdate={this.onDragUpdate} onDragEnd={this.onDragEnd}>
-      <Container>
-        { this.state.columnOrder.map(columnId => {
-          console.log(this.state);
-          const column = this.state.columns[columnId];
-          let info = column.poseIds.map(poseId => this.state.info[poseId]);
-          let flowInfo = column.poseIds.map(poseId => this.state.flowInfo[poseId]);
+    <React.Fragment>
+      <DragDropContext onDragStart={this.onDragStart} onDragUpdate={this.onDragUpdate} onDragEnd={this.onDragEnd}>
+        <Container>
+        <Dashboard />
+          { this.state.columnOrder.map(columnId => {
+            console.log(this.state);
+            const column = this.state.columns[columnId];
+            let info = column.poseIds.map(poseId => this.state.info[poseId]);
+            let flowInfo = column.poseIds.map(poseId => this.state.flowInfo[poseId]);
 
-          if (columnId === 'column-1') {
-            return <Column key={column.id} column={column} info={info} />;
-          } else if (columnId === 'column-2') {
-            console.log(column.poseIds);
-              return <Sequence key={column.id} column={column} info={flowInfo} />;
-            }
-        })}
-      </Container>
-    </DragDropContext>
+            if (columnId === 'column-1') {
+              return <Column key={column.id} column={column} info={info} />;
+            } else if (columnId === 'column-2') {
+              console.log(column.poseIds);
+                return <Sequence key={column.id} column={column} info={flowInfo} />;
+              }
+          })}
+        </Container>
+      </DragDropContext>
+    </React.Fragment>
   );
   }
 }
