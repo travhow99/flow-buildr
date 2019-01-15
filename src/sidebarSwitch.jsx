@@ -4,6 +4,7 @@ import '@atlaskit/css-reset';
 import styled from 'styled-components';
 
 
+
 const Sidebar = styled.div`
   margin-right: 8px;
   border-right: 1px solid lightgrey;
@@ -18,25 +19,15 @@ const Sidebar = styled.div`
   color: #fff;
 `;
 
-const Menu = styled.ul`
-  list-style-type: none;
-  padding: 10px;
-`;
-
-export default class Dashboard extends React.Component {
+export default class SidebarSwitch extends React.Component {
 
   render() {
 
+
     return (
-      <Sidebar>
-        <h3 style={{color: 'white'}}>flowbuildr</h3>
-        <Menu>
-          <li>Home</li>
-          <li>New Sequence</li>
-          <li>Past Sequences</li>
-          <li>Pose Bank</li>
-        </Menu>
-      </Sidebar>
+      <SwitchButton onClick={this.props.showDashboard}>
+
+      </SwitchButton>
     );
   }
 }

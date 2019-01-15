@@ -7,10 +7,19 @@ import initialData from './initial-data';
 import Column from './column';
 import Sequence from './sequence';
 import Dashboard from './dashboard';
+//import SidebarSwitch from './sidebarSwitch';
 import uuid from 'uuid/v4';
+import { FaBars } from 'react-icons/fa';
+import './App.css';
+
+
+const SwitchButton = styled.div`
+  position: fixed;
+`;
 
 const Container = styled.div`
   display: flex;
+  margin-left: 30px;
 `;
 
 // TO DO 1/4/19
@@ -29,6 +38,21 @@ const Container = styled.div`
 
 class App extends React.Component {
   state = initialData;
+
+  constructor (props) {
+    super(props);
+    this.state.dashboard = false;
+    this.showDashboard = this.showDashboard.bind(this);
+  }
+
+  showDashboard() {
+    this.setState({
+      dashboard: !this.state.dashboard,
+    });
+  }
+
+
+
 
   onDragStart = () => {
     // Use this to determine if <Clone /> is needed
@@ -96,19 +120,8 @@ class App extends React.Component {
       const newFinish = {
         ...finish,
         poseIds:finishPoseIds,
-        /*
-        initialPosition: {
-          ...finish.initialPosition,
-          [flowKey]: flowKey
-        },*/
-        //info: this.poseIds
       };
       console.log(newFinish);
-/*
-      const currentFlow = Array.from(flow);
-      currentFlow.splice(destination.index, 0, duplicate);
-      console.log(currentFlow);
-*/
 
       console.log(flowKey, duplicate);
 
@@ -159,27 +172,30 @@ class App extends React.Component {
 
   render() {
 
-
     return (
     <React.Fragment>
-      <DragDropContext onDragStart={this.onDragStart} onDragUpdate={this.onDragUpdate} onDragEnd={this.onDragEnd}>
-        <Container>
-        <Dashboard />
-          { this.state.columnOrder.map(columnId => {
-            console.log(this.state);
-            const column = this.state.columns[columnId];
-            let info = column.poseIds.map(poseId => this.state.info[poseId]);
-            let flowInfo = column.poseIds.map(poseId => this.state.flowInfo[poseId]);
+    {(this.state.dashboard === true) && <Dashboard />}
+    <SwitchButton onClick={this.showDashboard} className={this.state.dashboard ? "Pushed" : "" } >
+      <FaBars style={{ color: "pink", height: 25, width: 25, padding: 10, cursor: 'pointer' }} />
+    </SwitchButton>
+    <div id="dashboardContainer" className={this.state.dashboard ? "Pushed" : "" } >
+        <DragDropContext onDragStart={this.onDragStart} onDragUpdate={this.onDragUpdate} onDragEnd={this.onDragEnd}>
+          <Container>
+            { this.state.columnOrder.map(columnId => {
+              console.log(this.state);
+              const column = this.state.columns[columnId];
+              let info = column.poseIds.map(poseId => this.state.info[poseId]);
+              let flowInfo = column.poseIds.map(poseId => this.state.flowInfo[poseId]);
 
-            if (columnId === 'column-1') {
-              return <Column key={column.id} column={column} info={info} />;
-            } else if (columnId === 'column-2') {
-              console.log(column.poseIds);
+              if (columnId === 'column-1') {
+                return <Column key={column.id} column={column} info={info} />;
+              } else if (columnId === 'column-2') {
                 return <Sequence key={column.id} column={column} info={flowInfo} />;
               }
-          })}
-        </Container>
-      </DragDropContext>
+            })}
+          </Container>
+        </DragDropContext>
+      </div>
     </React.Fragment>
   );
   }

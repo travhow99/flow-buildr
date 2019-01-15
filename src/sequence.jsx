@@ -5,7 +5,7 @@ import Pose from './pose';
 import uuid from 'uuid/v4';
 
 const Container = styled.div`
-  margin: 8px;
+  margin: 10px;
   border: 1px solid lightgrey;
   border-radius: 2px;
   width: 280px;

@@ -10,6 +10,7 @@ const refinedData = poseData.map(function(yogaPose){
 
 
 const initialData = {
+  dashboard: false,
   columns: {
     'column-1': {
       id: 'column-1',

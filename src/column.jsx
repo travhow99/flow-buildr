@@ -4,7 +4,7 @@ import { Droppable } from 'react-beautiful-dnd';
 import Pose from './pose';
 
 const Container = styled.div`
-  margin: 8px;
+  margin: 10px;
   border: 1px solid lightgrey;
   border-radius: 2px;
   width: 280px;
