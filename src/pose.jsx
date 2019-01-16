@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Draggable } from 'react-beautiful-dnd';
-import { FaInfoCircle } from 'react-icons/fa';
+import { FaInfoCircle, FaPlusCircle } from 'react-icons/fa';
 
 
 
@@ -11,6 +11,7 @@ const Container = styled.div`
   padding: 8px;
   margin-bottom: 8px;
   background-color: ${props => (props.isDragging ? 'lightblue' : 'white')};
+  position: relative;
 `;
 
 const Clone = styled(Container)`
@@ -52,8 +53,6 @@ export default class Pose extends React.Component {
 
     const parent = this.props.parent;
 
-
-
     return (
       <Draggable draggableId={this.props.pose.id} index={this.props.index} >
       {(provided, snapshot) => (
@@ -64,6 +63,7 @@ export default class Pose extends React.Component {
             ref={provided.innerRef}
           >
           {this.props.pose.english_name}
+          {parent === "column-1" &&  <FaPlusCircle style={{ color: "orange", position: "absolute", right: 1, top: 1, height: 18, width: 18, cursor: "pointer" }} onClick={((e) => this.props.addPose(e, this.props.index))}/>}
             <PosePic>
               <img src={this.props.pose.img_url} />
             </PosePic>
@@ -82,6 +82,7 @@ export default class Pose extends React.Component {
               <PosePic>
                 <img src={this.props.pose.img_url} />
               </PosePic>
+              <FaPlusCircle style={{ color: "lightblue" }} />
               <div>
                 <a href={url} target="_blank">
                   <FaInfoCircle style={{ color: "lightblue", float: "left" }} />

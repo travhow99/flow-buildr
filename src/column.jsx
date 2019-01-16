@@ -31,7 +31,7 @@ export default class Column extends React.Component {
 
   render() {
 // Create second <Droppable /> for sequence
-  console.log(this.props.info);
+  console.log(this.props.addPose);
 
     return (
       <Container>
@@ -44,7 +44,7 @@ export default class Column extends React.Component {
               isDraggingOver={snapshot.isDraggingOver}
             >
               {this.props.info.map((pose, index) => (
-                <Pose key={pose.id} pose={pose} index={index} parent='column-1'/>
+                <Pose key={pose.id} pose={pose} index={index} parent='column-1' addPose={this.props.addPose}/>
               ))}
               {provided.placeholder}
             </PoseList>
