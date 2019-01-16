@@ -95,7 +95,7 @@ class App extends React.Component {
   }
 
   removePose = (e, index) => {
-    console.log(index);
+
     // Append (this) to end of 'column-2'
     const column = 'column-2';
     const finish = this.state.columns['column-2'];
@@ -104,21 +104,12 @@ class App extends React.Component {
     console.log(poseIndex, finishPoseIds);
 
     finishPoseIds.splice(poseIndex, 1);
-    console.log(finishPoseIds);
-/*
-
-    duplicate.id = uuid();
-    duplicate.originalId = poseIndex;
-
-    finishPoseIds.push(duplicate.id);
 
     const newFinish = {
       ...finish,
       poseIds:finishPoseIds,
     };
-    */
 
-    /* New state for column-2
     this.setState({
       columns: {
         ...this.state.columns,
@@ -126,20 +117,6 @@ class App extends React.Component {
       }
     });
 
-    const newState = {
-      ...this.state,
-      flowInfo: {
-        ...this.state.flowInfo,
-        [duplicate.id]: duplicate,
-      },
-      columns: {
-        ...this.state.columns,
-        [newFinish.id]: newFinish,
-      }
-    };
-    this.setState(newState);
-    return;
-*/
   }
 
 
