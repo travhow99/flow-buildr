@@ -33,6 +33,7 @@ const PosePic = styled.div`
   border: 1px #c7c3c3 solid;
   background-color: #c7c3c3;
   border-radius: 50%;
+  margin-right: 15px;
 `;
 
 const Info = styled.span`
@@ -40,7 +41,14 @@ const Info = styled.span`
   width: 15px;
   height: 15px;
   color: blue;
+`;
 
+const ButtonContainer = styled.div`
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  background: orange;
 `;
 
 // Potentially add <Handle > for draghandle, video #8
@@ -63,7 +71,11 @@ export default class Pose extends React.Component {
             ref={provided.innerRef}
           >
           {this.props.pose.english_name}
-          {parent === "column-1" &&  <FaPlusCircle style={{ color: "orange", position: "absolute", right: 1, top: 1, height: 18, width: 18, cursor: "pointer" }} onClick={((e) => this.props.addPose(e, this.props.index))}/>}
+          {parent === "column-1" &&
+            <ButtonContainer>
+              <FaPlusCircle style={{ color: "white", height: 18, width: 18, padding: 1, cursor: "pointer", position: "relative", top: "50%", transform: "translateY(-50%)" }} onClick={((e) => this.props.addPose(e, this.props.index))}/>
+            </ButtonContainer>
+            }
             <PosePic>
               <img src={this.props.pose.img_url} />
             </PosePic>
@@ -79,10 +91,12 @@ export default class Pose extends React.Component {
           {parent === 'column-1' && snapshot.isDragging && (
             <Clone>
               {this.props.pose.english_name}
+              <ButtonContainer>
+                <FaPlusCircle style={{ color: "white", height: 18, width: 18, padding: 1, cursor: "pointer", position: "relative", top: "50%", transform: "translateY(-50%)" }} onClick={((e) => this.props.addPose(e, this.props.index))}/>
+              </ButtonContainer>
               <PosePic>
                 <img src={this.props.pose.img_url} />
               </PosePic>
-              <FaPlusCircle style={{ color: "lightblue" }} />
               <div>
                 <a href={url} target="_blank">
                   <FaInfoCircle style={{ color: "lightblue", float: "left" }} />

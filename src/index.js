@@ -23,8 +23,6 @@ const Container = styled.div`
 `;
 
 // TO DO 1/4/19
-// Render <Pose /> with addButton
-  // click to append to bottom of flow
 // Multiply option
   // ie "shiva squat x3"
 // Remove option from <Sequence />
