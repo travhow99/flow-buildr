@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Draggable } from 'react-beautiful-dnd';
-import { FaInfoCircle, FaPlusCircle } from 'react-icons/fa';
+import { FaInfoCircle, FaPlusCircle, FaMinusCircle } from 'react-icons/fa';
 
 
 
@@ -71,11 +71,17 @@ export default class Pose extends React.Component {
             ref={provided.innerRef}
           >
           {this.props.pose.english_name}
-          {parent === "column-1" &&
+          {parent === "column-1" && !snapshot.isDragging &&
             <ButtonContainer>
               <FaPlusCircle style={{ color: "white", height: 18, width: 18, padding: 1, cursor: "pointer", position: "relative", top: "50%", transform: "translateY(-50%)" }} onClick={((e) => this.props.addPose(e, this.props.index))}/>
             </ButtonContainer>
             }
+            {/* Remove button for column-2 */}
+            {parent === "column-2" && !snapshot.isDragging &&
+              <ButtonContainer style={{background: "red"}}>
+                <FaMinusCircle style={{ color: "white", height: 18, width: 18, padding: 1, cursor: "pointer", position: "relative", top: "50%", transform: "translateY(-50%)" }} onClick={((e) => this.props.removePose(e, this.props.index))}/>
+              </ButtonContainer>
+              }
             <PosePic>
               <img src={this.props.pose.img_url} />
             </PosePic>
