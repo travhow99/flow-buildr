@@ -94,16 +94,18 @@ class App extends React.Component {
 
   }
 
-  //removePose = (e, index) => {
-  removePose() {
-    console.log('remove');
+  removePose = (e, index) => {
+    console.log(index);
     // Append (this) to end of 'column-2'
-    /*
     const column = 'column-2';
     const finish = this.state.columns['column-2'];
     const finishPoseIds = Array.from(finish.poseIds);
     const poseIndex = index;
-    const duplicate = {...this.state.info[poseIndex]};
+    console.log(poseIndex, finishPoseIds);
+
+    finishPoseIds.splice(poseIndex, 1);
+    console.log(finishPoseIds);
+/*
 
     duplicate.id = uuid();
     duplicate.originalId = poseIndex;
