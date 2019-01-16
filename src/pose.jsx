@@ -79,7 +79,7 @@ export default class Pose extends React.Component {
             {/* Remove button for column-2 */}
             {parent === "column-2" && !snapshot.isDragging &&
               <ButtonContainer style={{background: "red"}}>
-                <FaMinusCircle style={{ color: "white", height: 18, width: 18, padding: 1, cursor: "pointer", position: "relative", top: "50%", transform: "translateY(-50%)" }} onClick={((e) => this.props.removePose(e, this.props.index))}/>
+                <FaMinusCircle style={{ color: "white", height: 18, width: 18, padding: 1, cursor: "pointer", position: "relative", top: "50%", transform: "translateY(-50%)" }} onClick={ this.props.removePose /*((e) => this.props.removePose(e, this.props.index)) */}/>
               </ButtonContainer>
               }
             <PosePic>

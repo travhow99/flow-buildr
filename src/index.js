@@ -42,6 +42,7 @@ class App extends React.Component {
     this.state.dashboard = false;
     this.showDashboard = this.showDashboard.bind(this);
     this.addPose = this.addPose.bind(this);
+    this.removePose = this.removePose.bind(this);
   }
 
   showDashboard() {
@@ -91,6 +92,52 @@ class App extends React.Component {
     this.setState(newState);
     return;
 
+  }
+
+  //removePose = (e, index) => {
+  removePose() {
+    console.log('remove');
+    // Append (this) to end of 'column-2'
+    /*
+    const column = 'column-2';
+    const finish = this.state.columns['column-2'];
+    const finishPoseIds = Array.from(finish.poseIds);
+    const poseIndex = index;
+    const duplicate = {...this.state.info[poseIndex]};
+
+    duplicate.id = uuid();
+    duplicate.originalId = poseIndex;
+
+    finishPoseIds.push(duplicate.id);
+
+    const newFinish = {
+      ...finish,
+      poseIds:finishPoseIds,
+    };
+    */
+
+    /* New state for column-2
+    this.setState({
+      columns: {
+        ...this.state.columns,
+        [newFinish.id]: newFinish,
+      }
+    });
+
+    const newState = {
+      ...this.state,
+      flowInfo: {
+        ...this.state.flowInfo,
+        [duplicate.id]: duplicate,
+      },
+      columns: {
+        ...this.state.columns,
+        [newFinish.id]: newFinish,
+      }
+    };
+    this.setState(newState);
+    return;
+*/
   }
 
 
@@ -231,7 +278,7 @@ class App extends React.Component {
               if (columnId === 'column-1') {
                 return <Column key={column.id} column={column} info={info} addPose={this.addPose} />;
               } else if (columnId === 'column-2') {
-                return <Sequence key={column.id} column={column} info={flowInfo} />;
+                return <Sequence key={column.id} column={column} info={flowInfo} removePose={this.removePose} />;
               }
             })}
           </Container>
