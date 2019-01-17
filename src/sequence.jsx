@@ -45,7 +45,7 @@ export default class Column extends React.Component {
               isDraggingOver={snapshot.isDraggingOver}
             >
               {this.props.info.map((pose, index) => (
-                <Pose key={pose.id} pose={pose} index={index} parent='column-2' removePose={this.props.removePose}/>
+                <Pose key={pose.id} pose={pose} index={index} parent='column-2' removePose={this.props.removePose} addMultiplier={this.props.addMultiplier} />
               ))}
               {provided.placeholder}
             </PoseList>

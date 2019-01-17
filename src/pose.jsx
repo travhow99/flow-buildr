@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Draggable } from 'react-beautiful-dnd';
-import { FaInfoCircle, FaPlusCircle, FaMinusCircle } from 'react-icons/fa';
+import { FaInfoCircle, FaPlusCircle, FaMinusCircle, FaTimesCircle } from 'react-icons/fa';
 
 
 
@@ -78,9 +78,14 @@ export default class Pose extends React.Component {
             }
             {/* Remove button for column-2 */}
             {parent === "column-2" && !snapshot.isDragging &&
-              <ButtonContainer style={{background: "red"}}>
-                <FaMinusCircle style={{ color: "white", height: 18, width: 18, padding: 1, cursor: "pointer", position: "relative", top: "50%", transform: "translateY(-50%)" }} onClick={((e) => this.props.removePose(e, this.props.index)) }/>
-              </ButtonContainer>
+            <React.Fragment>
+                <ButtonContainer style={{background: "red", height: "50%"}}>
+                  <FaMinusCircle style={{ color: "white", height: 18, width: 18, padding: 1, cursor: "pointer", position: "relative", top: "50%", transform: "translateY(-50%)" }} onClick={((e) => this.props.removePose(e, this.props.index)) }/>
+                </ButtonContainer>
+                <ButtonContainer style={{background: "purple", height: "50%", bottom: 0, top: "50%"}}>
+                  <FaTimesCircle style={{ color: "white", height: 18, width: 18, padding: 1, cursor: "pointer", position: "relative", top: "50%", transform: "translateY(-50%)" }} onClick={this.props.addMultiplier} />
+                </ButtonContainer>
+              </React.Fragment>
               }
             <PosePic>
               <img src={this.props.pose.img_url} />

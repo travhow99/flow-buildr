@@ -25,7 +25,6 @@ const Container = styled.div`
 // TO DO 1/4/19
 // Multiply option
   // ie "shiva squat x3"
-// Remove option from <Sequence />
 // Templates
   // Sculpt, c1, c2 etc.
 // Group option? Sun A, Sun B
@@ -43,6 +42,7 @@ class App extends React.Component {
     this.showDashboard = this.showDashboard.bind(this);
     this.addPose = this.addPose.bind(this);
     this.removePose = this.removePose.bind(this);
+    this.addMultiplier = this.addMultiplier.bind(this);
   }
 
   showDashboard() {
@@ -50,6 +50,8 @@ class App extends React.Component {
       dashboard: !this.state.dashboard,
     });
   }
+
+  /* use larger function to add/remove/onDragEnd */
 
   addPose = (e, index) => {
     // Append (this) to end of 'column-2'
@@ -117,6 +119,35 @@ class App extends React.Component {
       }
     });
 
+  }
+
+  addMultiplier() {
+
+    console.log('add');
+    // Add property this.props.multiplied
+      // Show counter with Plus or minus on either side
+
+    /*
+    const column = 'column-2';
+    const finish = this.state.columns['column-2'];
+    const finishPoseIds = Array.from(finish.poseIds);
+    const poseIndex = index + 1;
+    console.log(poseIndex, finishPoseIds);
+
+    finishPoseIds.splice(poseIndex, 0, );
+
+    const newFinish = {
+      ...finish,
+      poseIds:finishPoseIds,
+    };
+
+    this.setState({
+      columns: {
+        ...this.state.columns,
+        [newFinish.id]: newFinish,
+      }
+    });
+    */
   }
 
 
@@ -257,7 +288,7 @@ class App extends React.Component {
               if (columnId === 'column-1') {
                 return <Column key={column.id} column={column} info={info} addPose={this.addPose} />;
               } else if (columnId === 'column-2') {
-                return <Sequence key={column.id} column={column} info={flowInfo} removePose={this.removePose} />;
+                return <Sequence key={column.id} column={column} info={flowInfo} removePose={this.removePose} addMultiplier={this.addMultiplier} />;
               }
             })}
           </Container>
