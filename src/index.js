@@ -63,6 +63,7 @@ class App extends React.Component {
 
     duplicate.id = uuid();
     duplicate.originalId = poseIndex;
+    duplicate.multiplied = 0;
 
     finishPoseIds.push(duplicate.id);
 
@@ -121,9 +122,20 @@ class App extends React.Component {
 
   }
 
-  addMultiplier() {
+  addMultiplier = (e, index) => {
 
-    console.log('add');
+    const pose = this.state.flowInfo[index];
+    pose.multiplied = 1;
+    console.log(pose);
+
+    this.setState({
+      flowInfo: {
+        ...this.state.flowInfo,
+        [pose.id]: pose,
+      }
+    })
+    // Gather index and use it to update state of .flowInfo.{index}.multiplied ++
+
     // Add property this.props.multiplied
       // Show counter with Plus or minus on either side
 
@@ -201,6 +213,7 @@ class App extends React.Component {
       console.log(duplicate);
       duplicate.id = uuid();
       duplicate.originalId = poseIndex;
+      duplicate.multiplied = 0;
       console.log(duplicate);
 
       finishPoseIds.splice(destination.index, 0, duplicate.id);

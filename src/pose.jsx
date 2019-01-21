@@ -62,7 +62,7 @@ export default class Pose extends React.Component {
     const parent = this.props.parent;
 
     return (
-      <Draggable draggableId={this.props.pose.id} index={this.props.index} >
+      <Draggable draggableId={this.props.pose.id} index={this.props.index} multiplied={this.props.multiplied} >
       {(provided, snapshot) => (
         <React.Fragment>
           <Container
@@ -76,14 +76,15 @@ export default class Pose extends React.Component {
               <FaPlusCircle style={{ color: "white", height: 18, width: 18, padding: 1, cursor: "pointer", position: "relative", top: "50%", transform: "translateY(-50%)" }} onClick={((e) => this.props.addPose(e, this.props.index))}/>
             </ButtonContainer>
             }
-            {/* Remove button for column-2 */}
+            {/* Remove & multiply button for column-2 */}
             {parent === "column-2" && !snapshot.isDragging &&
             <React.Fragment>
                 <ButtonContainer style={{background: "red", height: "50%"}}>
                   <FaMinusCircle style={{ color: "white", height: 18, width: 18, padding: 1, cursor: "pointer", position: "relative", top: "50%", transform: "translateY(-50%)" }} onClick={((e) => this.props.removePose(e, this.props.index)) }/>
                 </ButtonContainer>
                 <ButtonContainer style={{background: "purple", height: "50%", bottom: 0, top: "50%"}}>
-                  <FaTimesCircle style={{ color: "white", height: 18, width: 18, padding: 1, cursor: "pointer", position: "relative", top: "50%", transform: "translateY(-50%)" }} onClick={this.props.addMultiplier} />
+                  {this.props.multiplied === 0 && <FaTimesCircle style={{ color: "white", height: 18, width: 18, padding: 1, cursor: "pointer", position: "relative", top: "50%", transform: "translateY(-50%)" }} onClick={((e) => this.props.addMultiplier(e, this.props.pose.id))} multiplied={this.props.multiplied}/> }
+                  {this.props.multiplied > 0 && <div>{this.props.multiplied}</div>}
                 </ButtonContainer>
               </React.Fragment>
               }
