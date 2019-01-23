@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Multiplier from './multiplier';
 import { Draggable } from 'react-beautiful-dnd';
 import { FaInfoCircle, FaPlusCircle, FaMinusCircle, FaTimesCircle, FaRedo } from 'react-icons/fa';
-
+import Pluralize from 'react-pluralize';
 
 
 const Container = styled.div`
@@ -97,10 +97,10 @@ export default class Pose extends React.Component {
               </React.Fragment>
               }
             <PosePic>
-              <img src={this.props.pose.img_url} />
+              <img src={this.props.pose.img_url} alt={this.props.pose.english_name} />
             </PosePic>
             <div>
-              <a href={url} target="_blank">
+              <a href={url} target="_blank" rel="noopener noreferrer">
                 <FaInfoCircle style={{ color: "lightblue", float: "left" }} />
               </a>
             </div>
@@ -111,7 +111,7 @@ export default class Pose extends React.Component {
           {this.props.multiplied > 0 && !snapshot.isDragging &&
             /* Break into multiplier component */
             <Repeater>
-              <FaRedo style={{ verticalAlign: "text-bottom" }} /> <strong>{this.props.multiplied}</strong> times
+              <FaRedo style={{ verticalAlign: "text-bottom" }} /> <strong>{this.props.multiplied}</strong> <Pluralize singular={'time'} count={this.props.multiplied} showCount={false}/>
               <Multiplier />
             </Repeater>
           }
@@ -122,10 +122,10 @@ export default class Pose extends React.Component {
                 <FaPlusCircle style={{ color: "white", height: 18, width: 18, padding: 1, cursor: "pointer", position: "relative", top: "50%", transform: "translateY(-50%)" }} onClick={((e) => this.props.addPose(e, this.props.index))}/>
               </ButtonContainer>
               <PosePic>
-                <img src={this.props.pose.img_url} />
+                <img src={this.props.pose.img_url} alt={this.props.pose.english_name} />
               </PosePic>
               <div>
-                <a href={url} target="_blank">
+                <a href={url} target="_blank" rel="noopener noreferrer">
                   <FaInfoCircle style={{ color: "lightblue", float: "left" }} />
                 </a>
               </div>

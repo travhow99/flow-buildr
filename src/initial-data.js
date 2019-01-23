@@ -1,11 +1,12 @@
-import React, { Component } from 'react';
+//import React, { Component } from 'react';
 import poseData from './poseData.json';
 import uuid from 'uuid/v4';
 
+/*
 const refinedData = poseData.map(function(yogaPose){
   return <li>{yogaPose.sanskrit_name} - {yogaPose.english_name}</li>;
 });
-
+*/
 //console.log(Object.entries(poseData));
 
 
