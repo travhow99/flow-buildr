@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import Multiplier from './multiplier';
 import { Draggable } from 'react-beautiful-dnd';
-import { FaInfoCircle, FaPlusCircle, FaMinusCircle, FaTimesCircle } from 'react-icons/fa';
+import { FaInfoCircle, FaPlusCircle, FaMinusCircle, FaTimesCircle, FaRedo } from 'react-icons/fa';
 
 
 
@@ -15,17 +15,18 @@ const Container = styled.div`
   position: relative;
 `;
 
+const Clone = styled(Container)`
+  + div {
+    display: none!important;
+  }
+`;
+
 const Repeater = styled(Container)`
   margin-top: -14px;
   z-index: -1;
   background: purple;
   color: beige;
-`;
-
-const Clone = styled(Container)`
-  + div {
-    display: none!important;
-  }
+  border-radius: 0 0 8px 8px;
 `;
 
 const Sanskrit = styled.div`
@@ -110,7 +111,8 @@ export default class Pose extends React.Component {
           {this.props.multiplied > 0 && !snapshot.isDragging &&
             /* Break into multiplier component */
             <Repeater>
-              Repeat {this.props.multiplied} times.
+              <FaRedo style={{ verticalAlign: "text-bottom" }} /> <strong>{this.props.multiplied}</strong> times
+              <Multiplier />
             </Repeater>
           }
           {parent === 'column-1' && snapshot.isDragging && (
