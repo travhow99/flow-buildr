@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import Multiplier from './multiplier';
 import { Draggable } from 'react-beautiful-dnd';
 import { FaInfoCircle, FaPlusCircle, FaMinusCircle, FaTimesCircle } from 'react-icons/fa';
 
@@ -12,6 +13,13 @@ const Container = styled.div`
   margin-bottom: 8px;
   background-color: ${props => (props.isDragging ? 'lightblue' : 'white')};
   position: relative;
+`;
+
+const Repeater = styled(Container)`
+  margin-top: -14px;
+  z-index: -1;
+  background: purple;
+  color: beige;
 `;
 
 const Clone = styled(Container)`
@@ -82,9 +90,8 @@ export default class Pose extends React.Component {
                 <ButtonContainer style={{background: "red", height: "50%"}}>
                   <FaMinusCircle style={{ color: "white", height: 18, width: 18, padding: 1, cursor: "pointer", position: "relative", top: "50%", transform: "translateY(-50%)" }} onClick={((e) => this.props.removePose(e, this.props.index)) }/>
                 </ButtonContainer>
-                <ButtonContainer style={{background: "purple", height: "50%", bottom: 0, top: "50%"}}>
+                <ButtonContainer style={{background: this.props.multiplied === 0 ? "purple" : "#78ff23", height: "50%", bottom: 0, top: "50%"}}>
                   {this.props.multiplied === 0 && <FaTimesCircle style={{ color: "white", height: 18, width: 18, padding: 1, cursor: "pointer", position: "relative", top: "50%", transform: "translateY(-50%)" }} onClick={((e) => this.props.addMultiplier(e, this.props.pose.id))} multiplied={this.props.multiplied}/> }
-                  {this.props.multiplied > 0 && <div>{this.props.multiplied}</div>}
                 </ButtonContainer>
               </React.Fragment>
               }
@@ -100,6 +107,12 @@ export default class Pose extends React.Component {
               {this.props.pose.sanskrit_name}
             </Sanskrit>
           </Container>
+          {this.props.multiplied > 0 && !snapshot.isDragging &&
+            /* Break into multiplier component */
+            <Repeater>
+              Repeat {this.props.multiplied} times.
+            </Repeater>
+          }
           {parent === 'column-1' && snapshot.isDragging && (
             <Clone>
               {this.props.pose.english_name}
