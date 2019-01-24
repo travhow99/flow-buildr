@@ -40,9 +40,12 @@ class App extends React.Component {
     super(props);
     this.state.dashboard = false;
     this.showDashboard = this.showDashboard.bind(this);
+    /* No binding necessary for arrow functions
     this.addPose = this.addPose.bind(this);
     this.removePose = this.removePose.bind(this);
     this.addMultiplier = this.addMultiplier.bind(this);
+    this.increaseMultiplier = this.increaseMultiplier.bind(this);
+    */
   }
 
   showDashboard() {
@@ -134,32 +137,29 @@ class App extends React.Component {
         [pose.id]: pose,
       }
     })
-    // Gather index and use it to update state of .flowInfo.{index}.multiplied ++
 
-    // Add property this.props.multiplied
-      // Show counter with Plus or minus on either side
+  }
 
-    /*
-    const column = 'column-2';
-    const finish = this.state.columns['column-2'];
-    const finishPoseIds = Array.from(finish.poseIds);
-    const poseIndex = index + 1;
-    console.log(poseIndex, finishPoseIds);
-
-    finishPoseIds.splice(poseIndex, 0, );
-
-    const newFinish = {
-      ...finish,
-      poseIds:finishPoseIds,
-    };
-
+  increaseMultiplier = (e, index) => {
+    const pose = this.state.flowInfo[index];
+    pose.multiplied++;
     this.setState({
-      columns: {
-        ...this.state.columns,
-        [newFinish.id]: newFinish,
+      flowInfo: {
+        ...this.state.flowInfo,
+        [pose.id]: pose,
       }
-    });
-    */
+    })
+  }
+
+  decreaseMultiplier = (e, index) => {
+    const pose = this.state.flowInfo[index];
+    pose.multiplied--;
+    this.setState({
+      flowInfo: {
+        ...this.state.flowInfo,
+        [pose.id]: pose,
+      }
+    })
   }
 
 
@@ -301,7 +301,7 @@ class App extends React.Component {
               if (columnId === 'column-1') {
                 return <Column key={column.id} column={column} info={info} addPose={this.addPose} />;
               } else if (columnId === 'column-2') {
-                return <Sequence key={column.id} column={column} info={flowInfo} removePose={this.removePose} addMultiplier={this.addMultiplier} />;
+                return <Sequence key={column.id} column={column} info={flowInfo} removePose={this.removePose} addMultiplier={this.addMultiplier} increaseMultiplier={this.increaseMultiplier} decreaseMultiplier={this.decreaseMultiplier} />;
               }
             })}
           </Container>

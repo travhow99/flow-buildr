@@ -10,9 +10,9 @@ export default class Multiplier extends React.Component {
 
 
     return (
-      <div count={this.props.multiplied} style={{float: 'right'}}>
-        <button>-</button>
-        <button>+</button>
+      <div count={this.props.multiplied} style={{float: 'right'}} >
+        <button onClick={((e) => this.props.decreaseMultiplier(e, this.props.id))}>-</button>
+        <button onClick={((e) => this.props.increaseMultiplier(e, this.props.id))}>+</button>
       </div>
     );
   }

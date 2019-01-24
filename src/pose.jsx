@@ -23,7 +23,7 @@ const Clone = styled(Container)`
 
 const Repeater = styled(Container)`
   margin-top: -14px;
-  z-index: -1;
+  z-index: 0;
   background: purple;
   color: beige;
   border-radius: 0 0 8px 8px;
@@ -112,7 +112,9 @@ export default class Pose extends React.Component {
             /* Break into multiplier component */
             <Repeater>
               <FaRedo style={{ verticalAlign: "text-bottom" }} /> <strong>{this.props.multiplied}</strong> <Pluralize singular={'time'} count={this.props.multiplied} showCount={false}/>
-              <Multiplier />
+              <Multiplier multiplied={this.props.multiplied}
+              id={this.props.pose.id} increaseMultiplier={this.props.increaseMultiplier}
+              decreaseMultiplier={this.props.decreaseMultiplier} />
             </Repeater>
           }
           {parent === 'column-1' && snapshot.isDragging && (
