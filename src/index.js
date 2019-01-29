@@ -4,6 +4,8 @@ import '@atlaskit/css-reset';
 import styled from 'styled-components';
 import { DragDropContext } from 'react-beautiful-dnd';
 import initialData from './initial-data';
+import DashboardHeader from './dashboardHeader';
+import Welcome from './welcome';
 import Column from './column';
 import Sequence from './sequence';
 import Dashboard from './dashboard';
@@ -17,12 +19,28 @@ import './App.css';
 
 
 const SwitchButton = styled.div`
-  position: fixed;
+  position: absolute;
+  z-index: 1;
 `;
+
+const DashboardContainer = styled.div`
+    background: #bec9d4;
+    max-height: 95%;
+    height: 720px;
+    margin-right: 32px;
+    border-bottom-right-radius: 12px;
+}`;
 
 const Container = styled.div`
   display: flex;
-  margin-left: 30px;
+  padding: 20px;
+  margin-left: 40px;
+  margin-right: 12px;
+  position: relative;
+  top: 160px;
+  background: white;
+  height: 100%;
+
 `;
 
 const SaveButton = styled.div`
@@ -31,8 +49,6 @@ const SaveButton = styled.div`
 `;
 
 // TO DO 1/4/19
-// Multiply option
-  // ie "shiva squat x3"
 // Templates
   // Sculpt, c1, c2 etc.
 // Group option? Sun A, Sun B
@@ -42,24 +58,20 @@ const SaveButton = styled.div`
 
 
 class App extends React.Component {
+
   state = initialData;
 
   constructor (props) {
     super(props);
-    this.state.dashboard = false;
-    this.showDashboard = this.showDashboard.bind(this);
-    /* No binding necessary for arrow functions
-    this.addPose = this.addPose.bind(this);
-    this.removePose = this.removePose.bind(this);
-    this.addMultiplier = this.addMultiplier.bind(this);
-    this.increaseMultiplier = this.increaseMultiplier.bind(this);
-    */
+    this.state.dashboard = 'welcome';
+    this.state.sidebar = false;
+    this.showSidebar = this.showSidebar.bind(this);
     this.saveFlow = this.saveFlow.bind(this);
   }
 
-  showDashboard() {
+  showSidebar() {
     this.setState({
-      dashboard: !this.state.dashboard,
+      sidebar: !this.state.sidebar,
     });
   }
 
@@ -172,8 +184,6 @@ class App extends React.Component {
   }
 
   saveFlow() {
-    console.log('submitting');
-
     const timeStamp = new Date();
     const timeString = timeStamp.toString();
     const itemsRef = firebase.database().ref('items');
@@ -181,10 +191,9 @@ class App extends React.Component {
       flowOrder: this.state.flowInfo,
       sequenceColumn: this.state.columns['column-2'],
       submissionTime: timeString,
-      test: 'test',
     }
-    console.log(flow);
     itemsRef.push(flow);
+    alert('Flow Submitted!');
   }
 
 
@@ -230,16 +239,13 @@ class App extends React.Component {
 
       const poseIndex = source.index;
 
-      console.log(finish, finishPoseIds);
-
       // Use poseIndex to get full object of this.state.info {poseIndex}
 
       const duplicate = {...this.state.info[poseIndex]};
-      console.log(duplicate);
+
       duplicate.id = uuid();
       duplicate.originalId = poseIndex;
       duplicate.multiplied = 0;
-      console.log(duplicate);
 
       finishPoseIds.splice(destination.index, 0, duplicate.id);
 
@@ -257,12 +263,7 @@ class App extends React.Component {
         ...finish,
         poseIds:finishPoseIds,
       };
-      console.log(newFinish);
-
-      console.log(flowKey, duplicate);
-
       /* New state for column-2 */
-      console.log(this.state);
 
 
       const newState = {
@@ -307,34 +308,42 @@ class App extends React.Component {
   };
 
   render() {
+    document.body.style = 'background-color: #6989a9;'
+
 
     return (
     <React.Fragment>
-    {(this.state.dashboard === true) && <Dashboard />}
-    <SwitchButton onClick={this.showDashboard} className={this.state.dashboard ? "Pushed" : "" } >
-      <FaBars style={{ color: "pink", height: 25, width: 25, padding: 10, cursor: 'pointer' }} />
-    </SwitchButton>
-    <div id="dashboardContainer" className={this.state.dashboard ? "Pushed" : "" } >
-        <DragDropContext onDragStart={this.onDragStart} onDragUpdate={this.onDragUpdate} onDragEnd={this.onDragEnd}>
+    {(this.state.sidebar === true) && <Dashboard />}
+    <DashboardContainer className={this.state.sidebar ? "Pushed" : "" } >
+      <DashboardHeader sidebar={this.state.sidebar}/>
+      <SwitchButton onClick={this.showSidebar} >
+        <FaBars style={{ color: "pink", height: 25, width: 25, padding: 10, cursor: 'pointer' }} />
+      </SwitchButton>
+        {this.state.dashboard === 'welcome' &&
           <Container>
-            { this.state.columnOrder.map(columnId => {
-              console.log(this.state);
-              const column = this.state.columns[columnId];
-              let info = column.poseIds.map(poseId => this.state.info[poseId]);
-              let flowInfo = column.poseIds.map(poseId => this.state.flowInfo[poseId]);
+            <Welcome />
+          </Container> }
+          {this.state.dashboard === 'flowbuildr' && <DragDropContext onDragStart={this.onDragStart} onDragUpdate={this.onDragUpdate} onDragEnd={this.onDragEnd}>
+            <Container>
+              { this.state.columnOrder.map(columnId => {
+                console.log(this.state);
+                const column = this.state.columns[columnId];
+                let info = column.poseIds.map(poseId => this.state.info[poseId]);
+                let flowInfo = column.poseIds.map(poseId => this.state.flowInfo[poseId]);
 
-              if (columnId === 'column-1') {
-                return <Column key={column.id} column={column} info={info} addPose={this.addPose} />;
-              } else if (columnId === 'column-2') {
-                return <Sequence key={column.id} column={column} info={flowInfo} removePose={this.removePose} addMultiplier={this.addMultiplier} increaseMultiplier={this.increaseMultiplier} decreaseMultiplier={this.decreaseMultiplier} />;
-              }
-            })}
-          </Container>
-        </DragDropContext>
-        <SaveButton onClick={this.saveFlow}>
-          <button>Save Flow</button>
-        </SaveButton>
-      </div>
+                if (columnId === 'column-1') {
+                  return <Column key={column.id} column={column} info={info} addPose={this.addPose} />;
+                } else if (columnId === 'column-2') {
+                  return <Sequence key={column.id} column={column} info={flowInfo} removePose={this.removePose} addMultiplier={this.addMultiplier} increaseMultiplier={this.increaseMultiplier} decreaseMultiplier={this.decreaseMultiplier} />;
+                }
+              })}
+            </Container>
+            <SaveButton onClick={this.saveFlow}>
+              <button>Save Flow</button>
+            </SaveButton>
+          </DragDropContext>
+          }
+      </DashboardContainer>
     </React.Fragment>
   );
   }

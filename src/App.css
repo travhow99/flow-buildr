@@ -33,5 +33,6 @@
 
 
 .Pushed {
-  margin-left: 120px;
+  margin-left: 125px;
+  max-width: calc(100vw - 125px);
 }
