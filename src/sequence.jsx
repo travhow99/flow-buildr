@@ -31,8 +31,7 @@ const PoseList = styled.div`
 export default class Column extends React.Component {
 
   render() {
-// Create second <Droppable /> for sequence
-    console.log(this.props);
+
     return (
       <Container>
         <Title>Flow</Title>

@@ -13,6 +13,7 @@ const Container = styled.div`
   margin-bottom: 8px;
   background-color: ${props => (props.isDragging ? 'lightblue' : 'white')};
   position: relative;
+  z-index: 1;
 `;
 
 const Clone = styled(Container)`

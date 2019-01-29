@@ -7,6 +7,9 @@ import initialData from './initial-data';
 import Column from './column';
 import Sequence from './sequence';
 import Dashboard from './dashboard';
+//import SaveButton from './saveButton';
+import firebase from './firebase.js'; // <--- add this line
+
 //import SidebarSwitch from './sidebarSwitch';
 import uuid from 'uuid/v4';
 import { FaBars } from 'react-icons/fa';
@@ -20,6 +23,11 @@ const SwitchButton = styled.div`
 const Container = styled.div`
   display: flex;
   margin-left: 30px;
+`;
+
+const SaveButton = styled.div`
+  float: right;
+  background: dodger-blue;
 `;
 
 // TO DO 1/4/19
@@ -46,6 +54,7 @@ class App extends React.Component {
     this.addMultiplier = this.addMultiplier.bind(this);
     this.increaseMultiplier = this.increaseMultiplier.bind(this);
     */
+    this.saveFlow = this.saveFlow.bind(this);
   }
 
   showDashboard() {
@@ -160,6 +169,22 @@ class App extends React.Component {
         [pose.id]: pose,
       }
     })
+  }
+
+  saveFlow() {
+    console.log('submitting');
+
+    const timeStamp = new Date();
+    const timeString = timeStamp.toString();
+    const itemsRef = firebase.database().ref('items');
+    const flow = {
+      flowOrder: this.state.flowInfo,
+      sequenceColumn: this.state.columns['column-2'],
+      submissionTime: timeString,
+      test: 'test',
+    }
+    console.log(flow);
+    itemsRef.push(flow);
   }
 
 
@@ -306,6 +331,9 @@ class App extends React.Component {
             })}
           </Container>
         </DragDropContext>
+        <SaveButton onClick={this.saveFlow}>
+          <button>Save Flow</button>
+        </SaveButton>
       </div>
     </React.Fragment>
   );
