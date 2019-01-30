@@ -29,9 +29,7 @@ const SwitchButton = styled.div`
 `;
 
 const DashboardContainer = styled.div`
-    background-color: #f0f0f0;
-    background-image: url("data:image/svg+xml,%3Csvg width='12' height='16' viewBox='0 0 12 16' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4 .99C4 .445 4.444 0 5 0c.552 0 1 .45 1 .99v4.02C6 5.555 5.556 6 5 6c-.552 0-1-.45-1-.99V.99zm6 8c0-.546.444-.99 1-.99.552 0 1 .45 1 .99v4.02c0 .546-.444.99-1 .99-.552 0-1-.45-1-.99V8.99z' fill='%23c36ec9' fill-opacity='0.3' fill-rule='evenodd'/%3E%3C/svg%3E");
-    height: 100vh;
+/*    height: 100vh;*/
 }`;
 
 const Container = styled.div`
@@ -39,7 +37,7 @@ const Container = styled.div`
   display: flex;
   margin-left: 40px;
   margin-right: 40px;
-  margin-top: -140px;
+  margin-top: -94px;
   height: 720px;
   box-shadow: rgba(132, 125, 125, 0.92) 0px 5px 15px;
   padding: 20px;
@@ -52,6 +50,9 @@ const SaveButton = styled.div`
   right: 20px;
   bottom: 15px;
 `;
+
+const bodyStyle = `background-color: #f0f0f0;
+    background-image: url("data:image/svg+xml,%3Csvg width='12' height='16' viewBox='0 0 12 16' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4 .99C4 .445 4.444 0 5 0c.552 0 1 .45 1 .99v4.02C6 5.555 5.556 6 5 6c-.552 0-1-.45-1-.99V.99zm6 8c0-.546.444-.99 1-.99.552 0 1 .45 1 .99v4.02c0 .546-.444.99-1 .99-.552 0-1-.45-1-.99V8.99z' fill='%23c36ec9' fill-opacity='0.3' fill-rule='evenodd'/%3E%3C/svg%3E");`
 
 // TO DO 1/4/19
 // Templates
@@ -320,13 +321,13 @@ class App extends React.Component {
   };
 
   render() {
-    document.body.style = 'background-color: #6989a9;'
+    document.body.style = bodyStyle;
 
 
     return (
     <React.Fragment>
-    <div className={'container-fluid ' + (this.state.sidebar ? "Pushed" : "") }>
     {(this.state.sidebar === true) && <Dashboard navigate={this.navigate} />}
+    <div className={'container-fluid ' + (this.state.sidebar ? "Pushed" : "") }>
     <DashboardContainer className='row'  >
       <DashboardHeader sidebar={this.state.sidebar}/>
       <SwitchButton onClick={this.showSidebar} >
