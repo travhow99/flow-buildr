@@ -14,6 +14,7 @@ import Column from './column';
 import Sequence from './sequence';
 import Dashboard from './dashboard';
 //import SaveButton from './saveButton';
+import PastSequences from './pastSequences';
 import firebase from './firebase.js'; // <--- add this line
 
 //import SidebarSwitch from './sidebarSwitch';
@@ -60,6 +61,7 @@ const bodyStyle = `background-color: #f0f0f0;
 // Group option? Sun A, Sun B
 // Save Option
   // Saves Current Flow, title it
+  // Upon save, switch to edit mode
   // Allow for opening and editing saved flows
 
 
@@ -73,6 +75,7 @@ class App extends React.Component {
     this.state.sidebar = false;
     this.showSidebar = this.showSidebar.bind(this);
     this.saveFlow = this.saveFlow.bind(this);
+    this.getFlow = this.getFlow.bind(this);
   }
 
   showSidebar() {
@@ -82,7 +85,6 @@ class App extends React.Component {
   }
 
   navigate = (e, id) => {
-    console.log(id);
     this.setState({
       dashboard: id
     })
@@ -207,6 +209,26 @@ class App extends React.Component {
     }
     itemsRef.push(flow);
     alert('Flow Submitted!');
+  }
+
+  getFlow() {
+    const itemsRef = firebase.database().ref('items');
+    itemsRef.on('value', (snapshot) => {
+      let items = snapshot.val();
+      let newState = [];
+      for (let item in items) {
+
+        newState.push({
+          id: item,
+          flowOrder: items[item].flowOrder,
+          sequenceColumn: items[item].sequenceColumn,
+          creationDate: items[item].submissionTime
+        });
+      }
+      this.setState({
+        pastFlows: newState
+      });
+    });
   }
 
 
@@ -337,6 +359,7 @@ class App extends React.Component {
           <Container>
             <Welcome />
           </Container> }
+
           {this.state.dashboard === 'flowbuildr' && <DragDropContext onDragStart={this.onDragStart} onDragUpdate={this.onDragUpdate} onDragEnd={this.onDragEnd}>
             <Container style={{position: 'relative'}}>
               { this.state.columnOrder.map(columnId => {
@@ -357,6 +380,15 @@ class App extends React.Component {
             </Container>
           </DragDropContext>
           }
+
+          {this.state.dashboard === 'pastsequences' &&
+            <Container style={{position: 'relative'}}>
+              <PastSequences />
+              <SaveButton onClick={this.getFlow}>
+                <button className='btn btn-primary'>Display Flow</button>
+              </SaveButton>
+            </Container> }
+
       </DashboardContainer>
       </div>
     </React.Fragment>
