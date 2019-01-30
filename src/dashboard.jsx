@@ -14,7 +14,7 @@ const Sidebar = styled.div`
   flex-direction: column;
   height: 100vh;
   min-height: 600px;
-  background-color: #86c3ff;
+  background-color: #6889a9;
   color: #fff;
 `;
 
@@ -31,10 +31,10 @@ export default class Dashboard extends React.Component {
       <Sidebar>
         <h3 style={{color: 'white'}}>flowbuildr</h3>
         <Menu>
-          <li>Home</li>
-          <li>flowbuildr</li>
-          <li>Past Sequences</li>
-          <li>Pose Bank</li>
+          <li onClick={((e) => this.props.navigate(e, "welcome"))}>Home</li>
+          <li onClick={((e) => this.props.navigate(e, "flowbuildr"))}>flowbuildr</li>
+          <li onClick={((e) => this.props.navigate(e, "pastsequences"))}>Past Sequences</li>
+          <li onClick={((e) => this.props.navigate(e, "posebank"))}>Pose Bank</li>
         </Menu>
       </Sidebar>
     );

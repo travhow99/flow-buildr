@@ -35,15 +35,16 @@ const DashboardContainer = styled.div`
 }`;
 
 const Container = styled.div`
+  width: 100%;
   display: flex;
-  padding: 20px;
   margin-left: 40px;
   margin-right: 40px;
-  position: relative;
-  top: 160px;
-  background: white;
+  margin-top: -140px;
   height: 70%;
-
+  box-shadow: rgba(132, 125, 125, 0.92) 0px 5px 15px;
+  padding: 20px;
+  background: white;
+  border-radius: 15px;
 `;
 
 const SaveButton = styled.div`
@@ -76,6 +77,13 @@ class App extends React.Component {
     this.setState({
       sidebar: !this.state.sidebar,
     });
+  }
+
+  navigate = (e, id) => {
+    console.log(id);
+    this.setState({
+      dashboard: id
+    })
   }
 
   /* use larger function to add/remove/onDragEnd */
@@ -316,12 +324,12 @@ class App extends React.Component {
 
     return (
     <React.Fragment>
-    <div className='container-fluid'>
-    {(this.state.sidebar === true) && <Dashboard />}
-    <DashboardContainer className={'container', this.state.sidebar ? "Pushed" : "" } >
+    <div className={'container-fluid ' + (this.state.sidebar ? "Pushed" : "") }>
+    {(this.state.sidebar === true) && <Dashboard navigate={this.navigate} />}
+    <DashboardContainer className='row'  >
       <DashboardHeader sidebar={this.state.sidebar}/>
       <SwitchButton onClick={this.showSidebar} >
-        <FaBars style={{ color: "pink", height: 25, width: 25, padding: 10, cursor: 'pointer' }} />
+        <FaBars style={{ color: "pink", height: 45, width: 40, padding: 10, cursor: 'pointer' }} />
       </SwitchButton>
         {this.state.dashboard === 'welcome' &&
           <Container>

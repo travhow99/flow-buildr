@@ -5,13 +5,9 @@ import styled from 'styled-components';
 
 
 const Header = styled.div`
-  position: absolute;
-  z-index: 0;
-  left: 0;
-  right: 0;
-  height: 200px;
+  height: 272px;
+  width: 100%;
   background-color: #86c3ff;
-  color: white;
 `;
 
 const Menu = styled.ul`
@@ -25,7 +21,7 @@ export default class DashboardHeader extends React.Component {
 
     return (
       <Header style={{left: this.props.sidebar ? 125 :  0}}>
-        <div style={{padding: 40, maxWidth: '100%'}}>
+        <div style={{padding: 40, width: '100%'}}>
           <h1 style={{color: 'rgb(143, 40, 177)'}}>flowbuildr</h1>
           <h3 style={{color: 'rgb(143, 40, 177)'}}>A yoga teacher's best friend</h3>
         </div>
