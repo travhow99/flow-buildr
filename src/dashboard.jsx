@@ -14,7 +14,7 @@ const Sidebar = styled.div`
   flex-direction: column;
   height: 100vh;
   min-height: 600px;
-  background-color: dodgerblue;
+  background-color: #86c3ff;
   color: #fff;
 `;
 

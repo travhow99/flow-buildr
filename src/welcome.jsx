@@ -9,7 +9,7 @@ export default class Welcome extends React.Component {
 
     return (
       <div>
-        <p>Welcome to flowbuildr! Time to optimize your flow creation process. To begin, just click the <strong>New Sequence</strong> tab!</p>
+        <p className="lead">Welcome to flowbuildr! Time to optimize your flow creation process. To begin, just click the <strong>New Sequence</strong> tab!</p> 
       </div>
     );
   }

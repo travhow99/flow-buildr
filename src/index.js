@@ -1,3 +1,7 @@
+import 'bootstrap/dist/css/bootstrap.min.css';
+import $ from 'jquery';
+import Popper from 'popper.js';
+import 'bootstrap/dist/js/bootstrap.bundle.min';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import '@atlaskit/css-reset';
@@ -16,6 +20,7 @@ import firebase from './firebase.js'; // <--- add this line
 import uuid from 'uuid/v4';
 import { FaBars } from 'react-icons/fa';
 import './App.css';
+import './styles.css';
 
 
 const SwitchButton = styled.div`
@@ -24,22 +29,20 @@ const SwitchButton = styled.div`
 `;
 
 const DashboardContainer = styled.div`
-    background: #bec9d4;
-    max-height: 95%;
-    height: 720px;
-    margin-right: 32px;
-    border-bottom-right-radius: 12px;
+    background-color: #f0f0f0;
+    background-image: url("data:image/svg+xml,%3Csvg width='12' height='16' viewBox='0 0 12 16' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4 .99C4 .445 4.444 0 5 0c.552 0 1 .45 1 .99v4.02C6 5.555 5.556 6 5 6c-.552 0-1-.45-1-.99V.99zm6 8c0-.546.444-.99 1-.99.552 0 1 .45 1 .99v4.02c0 .546-.444.99-1 .99-.552 0-1-.45-1-.99V8.99z' fill='%23c36ec9' fill-opacity='0.3' fill-rule='evenodd'/%3E%3C/svg%3E");
+    height: 100vh;
 }`;
 
 const Container = styled.div`
   display: flex;
   padding: 20px;
   margin-left: 40px;
-  margin-right: 12px;
+  margin-right: 40px;
   position: relative;
   top: 160px;
   background: white;
-  height: 100%;
+  height: 70%;
 
 `;
 
@@ -313,8 +316,9 @@ class App extends React.Component {
 
     return (
     <React.Fragment>
+    <div className='container-fluid'>
     {(this.state.sidebar === true) && <Dashboard />}
-    <DashboardContainer className={this.state.sidebar ? "Pushed" : "" } >
+    <DashboardContainer className={'container', this.state.sidebar ? "Pushed" : "" } >
       <DashboardHeader sidebar={this.state.sidebar}/>
       <SwitchButton onClick={this.showSidebar} >
         <FaBars style={{ color: "pink", height: 25, width: 25, padding: 10, cursor: 'pointer' }} />
@@ -344,6 +348,7 @@ class App extends React.Component {
           </DragDropContext>
           }
       </DashboardContainer>
+      </div>
     </React.Fragment>
   );
   }
