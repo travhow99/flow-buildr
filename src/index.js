@@ -40,7 +40,7 @@ const Container = styled.div`
   margin-left: 40px;
   margin-right: 40px;
   margin-top: -140px;
-  height: 70%;
+  height: 720px;
   box-shadow: rgba(132, 125, 125, 0.92) 0px 5px 15px;
   padding: 20px;
   background: white;
@@ -48,8 +48,9 @@ const Container = styled.div`
 `;
 
 const SaveButton = styled.div`
-  float: right;
-  background: dodger-blue;
+  position: absolute;
+  right: 20px;
+  bottom: 15px;
 `;
 
 // TO DO 1/4/19
@@ -336,7 +337,7 @@ class App extends React.Component {
             <Welcome />
           </Container> }
           {this.state.dashboard === 'flowbuildr' && <DragDropContext onDragStart={this.onDragStart} onDragUpdate={this.onDragUpdate} onDragEnd={this.onDragEnd}>
-            <Container>
+            <Container style={{position: 'relative'}}>
               { this.state.columnOrder.map(columnId => {
                 console.log(this.state);
                 const column = this.state.columns[columnId];
@@ -349,10 +350,10 @@ class App extends React.Component {
                   return <Sequence key={column.id} column={column} info={flowInfo} removePose={this.removePose} addMultiplier={this.addMultiplier} increaseMultiplier={this.increaseMultiplier} decreaseMultiplier={this.decreaseMultiplier} />;
                 }
               })}
+              <SaveButton onClick={this.saveFlow}>
+                <button className='btn btn-primary'>Save Flow</button>
+              </SaveButton>
             </Container>
-            <SaveButton onClick={this.saveFlow}>
-              <button>Save Flow</button>
-            </SaveButton>
           </DragDropContext>
           }
       </DashboardContainer>
