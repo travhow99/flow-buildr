@@ -27,3 +27,23 @@ p {
 svg {
   vertical-align: baseline;
 }
+
+/* Bootstrap Overrides */
+.btn-primary {
+    background-color: #5f89ac;
+    border-color: #5389af;
+}
+
+.btn-primary:hover, .btn-primary:active, .btn-primary:not(:disabled):not(.disabled):active {
+    background-color: #446077;
+    border-color: #364a5a;
+}
+
+
+
+
+
+.menu li {
+  width: fit-content;
+  cursor: pointer;
+}

@@ -39,11 +39,11 @@ const Container = styled.div`
   margin-left: 40px;
   margin-right: 40px;
   margin-top: -94px;
+  margin-bottom: 40px;
   height: 720px;
-  box-shadow: rgba(132, 125, 125, 0.92) 0px 5px 15px;
+  box-shadow: rgba(132, 125, 125, 0.92) 0px 2px 15px;
   padding: 20px;
   background: white;
-  border-radius: 15px;
 `;
 
 const SaveButton = styled.div`
@@ -75,7 +75,8 @@ class App extends React.Component {
     this.state.sidebar = false;
     this.showSidebar = this.showSidebar.bind(this);
     this.saveFlow = this.saveFlow.bind(this);
-    this.getFlow = this.getFlow.bind(this);
+    //this.getFlow = this.getFlow.bind(this);
+    this.navigate = this.navigate.bind(this);
   }
 
   showSidebar() {
@@ -211,7 +212,7 @@ class App extends React.Component {
     alert('Flow Submitted!');
   }
 
-  getFlow() {
+  componentDidMount() {
     const itemsRef = firebase.database().ref('items');
     itemsRef.on('value', (snapshot) => {
       let items = snapshot.val();
@@ -348,12 +349,12 @@ class App extends React.Component {
 
     return (
     <React.Fragment>
-    {(this.state.sidebar === true) && <Dashboard navigate={this.navigate} />}
+    {(this.state.sidebar === true) && <Dashboard getFlow={this.getFlow}  navigate={this.navigate} />}
     <div className={'container-fluid ' + (this.state.sidebar ? "Pushed" : "") }>
     <DashboardContainer className='row'  >
       <DashboardHeader sidebar={this.state.sidebar}/>
       <SwitchButton onClick={this.showSidebar} >
-        <FaBars style={{ color: "pink", height: 45, width: 40, padding: 10, cursor: 'pointer' }} />
+        <FaBars style={{ color: "#b3d7ff", height: 45, width: 40, padding: 10, cursor: 'pointer' }} />
       </SwitchButton>
         {this.state.dashboard === 'welcome' &&
           <Container>
@@ -383,8 +384,8 @@ class App extends React.Component {
 
           {this.state.dashboard === 'pastsequences' &&
             <Container style={{position: 'relative'}}>
-              <PastSequences />
-              <SaveButton onClick={this.getFlow}>
+              <PastSequences pastFlows={this.state.pastFlows} />
+              <SaveButton>
                 <button className='btn btn-primary'>Display Flow</button>
               </SaveButton>
             </Container> }

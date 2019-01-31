@@ -8,7 +8,7 @@ import { FaUserCircle } from 'react-icons/fa';
 const Header = styled.div`
   height: 272px;
   width: 100%;
-  background-color: #86c3ff;
+  background-color: #6889a9;
 `;
 
 const Menu = styled.ul`
@@ -34,8 +34,8 @@ export default class DashboardHeader extends React.Component {
     return (
       <Header style={{left: this.props.sidebar ? 125 :  0}}>
         <div style={{padding: 40, width: '100%'}}>
-          <h1 style={{color: 'rgb(143, 40, 177)'}}>flowbuildr</h1>
-          <h3 style={{color: 'rgb(143, 40, 177)'}}>`A yoga teacher's best friend`</h3>
+          <h1 style={{color: '#b3d7ff'}}>flowbuildr</h1>
+          <h3 style={{color: '#fff'}}>A yoga teacher's best friend</h3>
           <div style={profile}>
             <span style={{float: 'left', marginRight: 12}}>Welcome,<br />
             Yogi</span>

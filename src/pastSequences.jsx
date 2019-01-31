@@ -10,9 +10,19 @@ export default class PastSequences extends React.Component {
 
 
     return (
-      <div>
-        <p className="lead">fdsafdafda</p>
-      </div>
+      <section className='display-item'>
+        <div className="wrapper">
+          <ul>
+            {this.props.pastFlows.map((item) => {
+              return (
+                <li key={item.id}>
+                  <p>created: {item.creationDate}</p>
+                </li>
+              )
+            })}
+          </ul>
+        </div>
+      </section>
     );
   }
 }

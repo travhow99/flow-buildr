@@ -29,8 +29,8 @@ export default class Dashboard extends React.Component {
 
     return (
       <Sidebar>
-        <h3 style={{color: 'white'}}>flowbuildr</h3>
-        <Menu>
+        <h3 style={{color: 'rgb(179, 215, 255)'}}>flowbuildr</h3>
+        <Menu className="menu">
           <li onClick={((e) => this.props.navigate(e, "welcome"))}>Home</li>
           <li onClick={((e) => this.props.navigate(e, "flowbuildr"))}>flowbuildr</li>
           <li onClick={((e) => this.props.navigate(e, "pastsequences"))}>Past Sequences</li>
