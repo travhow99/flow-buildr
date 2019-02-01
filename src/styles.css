@@ -39,11 +39,27 @@ svg {
     border-color: #364a5a;
 }
 
-
-
-
+.btn-link {
+  padding: 0;
+  margin-left: 4px;
+  color: #5f89aca3;
+}
 
 .menu li {
   width: fit-content;
   cursor: pointer;
+}
+
+input::placeholder {
+  color: #5f89aca3;
+}
+
+.title-input {
+  color: #5f89aca3;
+  border: none;
+  border-bottom: 2px solid rgba(169, 213, 255, 0.6);
+}
+
+.title-input:focus {
+  outline: none;
 }

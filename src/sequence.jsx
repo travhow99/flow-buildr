@@ -6,6 +6,7 @@ import uuid from 'uuid/v4';
 
 const Container = styled.div`
   margin: 10px;
+  margin-top: 38px;
   border: 1px solid lightgrey;
   border-radius: 2px;
   width: 280px;

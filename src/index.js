@@ -13,7 +13,7 @@ import Welcome from './welcome';
 import Column from './column';
 import Sequence from './sequence';
 import Dashboard from './dashboard';
-//import SaveButton from './saveButton';
+// import Title from './title';
 import PastSequences from './pastSequences';
 import firebase from './firebase.js'; // <--- add this line
 
@@ -46,6 +46,14 @@ const Container = styled.div`
   background: white;
 `;
 
+const TitleForm = styled.form`
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  width: 214px;
+`;
+
 const SaveButton = styled.div`
   position: absolute;
   right: 20px;
@@ -73,10 +81,29 @@ class App extends React.Component {
     super(props);
     this.state.dashboard = 'welcome';
     this.state.sidebar = false;
+    this.state.titleInput = '';
+    this.state.title = '';
     this.showSidebar = this.showSidebar.bind(this);
     this.saveFlow = this.saveFlow.bind(this);
     //this.getFlow = this.getFlow.bind(this);
     this.navigate = this.navigate.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.submitTitle = this.submitTitle.bind(this);
+  }
+
+  handleChange(event) {
+    this.setState({
+      titleInput: event.target.value
+    })
+  }
+
+  submitTitle(event) {
+    event.preventDefault();
+    console.log(this.state.titleInput);
+    this.setState({
+      titleInput: '',
+      title: this.state.titleInput,
+    });
   }
 
   showSidebar() {
@@ -210,6 +237,10 @@ class App extends React.Component {
     }
     itemsRef.push(flow);
     alert('Flow Submitted!');
+  }
+
+  setTitle(e) {
+    console.log(e.target.value);
   }
 
   componentDidMount() {
@@ -363,8 +394,11 @@ class App extends React.Component {
 
           {this.state.dashboard === 'flowbuildr' && <DragDropContext onDragStart={this.onDragStart} onDragUpdate={this.onDragUpdate} onDragEnd={this.onDragEnd}>
             <Container style={{position: 'relative'}}>
+              <TitleForm onSubmit={this.submitTitle}>
+                <input value={this.state.titleInput} onChange={this.handleChange} className='title-input' type="text" placeholder="name this flow" />
+                <button className='btn btn-link' type='submit'>Save</button>
+              </TitleForm>
               { this.state.columnOrder.map(columnId => {
-                console.log(this.state);
                 const column = this.state.columns[columnId];
                 let info = column.poseIds.map(poseId => this.state.info[poseId]);
                 let flowInfo = column.poseIds.map(poseId => this.state.flowInfo[poseId]);
