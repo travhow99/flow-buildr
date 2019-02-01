@@ -51,7 +51,15 @@ const TitleForm = styled.form`
   left: 0;
   right: 0;
   margin: 0 auto;
-  width: 214px;
+  width: fit-content;
+`;
+
+const Title = styled.h2`
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  width: fit-content;
 `;
 
 const SaveButton = styled.div`
@@ -231,6 +239,7 @@ class App extends React.Component {
     const timeString = timeStamp.toString();
     const itemsRef = firebase.database().ref('items');
     const flow = {
+      flowTitle: this.state.title,
       flowOrder: this.state.flowInfo,
       sequenceColumn: this.state.columns['column-2'],
       submissionTime: timeString,
@@ -252,6 +261,7 @@ class App extends React.Component {
 
         newState.push({
           id: item,
+          flowTitle: items[item].flowTitle,
           flowOrder: items[item].flowOrder,
           sequenceColumn: items[item].sequenceColumn,
           creationDate: items[item].submissionTime
@@ -394,10 +404,13 @@ class App extends React.Component {
 
           {this.state.dashboard === 'flowbuildr' && <DragDropContext onDragStart={this.onDragStart} onDragUpdate={this.onDragUpdate} onDragEnd={this.onDragEnd}>
             <Container style={{position: 'relative'}}>
-              <TitleForm onSubmit={this.submitTitle}>
+              {this.state.title === '' ? (<TitleForm onSubmit={this.submitTitle}>
                 <input value={this.state.titleInput} onChange={this.handleChange} className='title-input' type="text" placeholder="name this flow" />
                 <button className='btn btn-link' type='submit'>Save</button>
-              </TitleForm>
+              </TitleForm>) : (
+                <Title>{this.state.title}</Title>
+              )}
+
               { this.state.columnOrder.map(columnId => {
                 const column = this.state.columns[columnId];
                 let info = column.poseIds.map(poseId => this.state.info[poseId]);

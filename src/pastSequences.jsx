@@ -16,7 +16,7 @@ export default class PastSequences extends React.Component {
             {this.props.pastFlows.map((item) => {
               return (
                 <li key={item.id}>
-                  <p>created: {item.creationDate}</p>
+                  <p>created: {item.flowTitle}</p>
                 </li>
               )
             })}
