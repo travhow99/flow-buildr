@@ -19,7 +19,7 @@ import firebase from './firebase.js'; // <--- add this line
 
 //import SidebarSwitch from './sidebarSwitch';
 import uuid from 'uuid/v4';
-import { FaBars } from 'react-icons/fa';
+import { FaBars, FaEdit } from 'react-icons/fa';
 import './App.css';
 import './styles.css';
 
@@ -238,6 +238,13 @@ class App extends React.Component {
     const timeStamp = new Date();
     const timeString = timeStamp.toString();
     const itemsRef = firebase.database().ref('items');
+
+    if (!this.state.title || this.state.columns['column-2'].poseIds.length === 0) {
+      alert('oops!');
+      return;
+    }
+
+    console.log(this.state.title, this.state.columns['column-2']);
     const flow = {
       flowTitle: this.state.title,
       flowOrder: this.state.flowInfo,
@@ -408,7 +415,7 @@ class App extends React.Component {
                 <input value={this.state.titleInput} onChange={this.handleChange} className='title-input' type="text" placeholder="name this flow" />
                 <button className='btn btn-link' type='submit'>Save</button>
               </TitleForm>) : (
-                <Title>{this.state.title}</Title>
+                <Title>{this.state.title} <FaEdit /></Title>
               )}
 
               { this.state.columnOrder.map(columnId => {
