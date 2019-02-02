@@ -63,3 +63,21 @@ input::placeholder {
 .title-input:focus {
   outline: none;
 }
+
+/* Past Flows Stylings */
+.display-item {
+  width: 100%;
+}
+
+.card {
+  position: relative;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  background-color: #fff;
+  border: 1px solid #eceff1;
+  border-radius: .15rem;
+  box-shadow: 0 1px 4px rgba(0,0,0,.06);
+}
