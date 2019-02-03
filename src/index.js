@@ -99,6 +99,7 @@ class App extends React.Component {
     this.navigate = this.navigate.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.submitTitle = this.submitTitle.bind(this);
+    this.editFlow = this.editFlow.bind(this);
     this.removeFlow = this.removeFlow.bind(this);
   }
 
@@ -258,7 +259,25 @@ class App extends React.Component {
     alert('Flow Submitted!');
     this.setState({
       dashboard: 'pastsequences',
-    })
+    });
+  }
+
+  editFlow(id) {
+    const pastFlow = this.state.pastFlows[id];
+    const column = pastFlow.sequenceColumn.id;
+    console.log(pastFlow.flowOrder);
+    const flowOrder = pastFlow.flowOrder;
+
+    this.setState({
+      title: pastFlow.flowTitle,
+      flowInfo: flowOrder,
+      columns: {
+        ...this.state.columns,
+        [column]: pastFlow.sequenceColumn,
+      },
+      dashboard: 'flowbuildr',
+    });
+
   }
 
   removeFlow(id) {
@@ -427,6 +446,7 @@ class App extends React.Component {
 
               { this.state.columnOrder.map(columnId => {
                 const column = this.state.columns[columnId];
+                console.log(this.state);
                 let info = column.poseIds.map(poseId => this.state.info[poseId]);
                 let flowInfo = column.poseIds.map(poseId => this.state.flowInfo[poseId]);
 
@@ -445,7 +465,7 @@ class App extends React.Component {
 
           {this.state.dashboard === 'pastsequences' &&
             <Container style={{position: 'relative'}}>
-              <PastSequences pastFlows={this.state.pastFlows} remover={this.removeFlow} />
+              <PastSequences pastFlows={this.state.pastFlows} edit={this.editFlow} remover={this.removeFlow} />
               <SaveButton>
                 <button className='btn btn-primary'>Display Flow</button>
               </SaveButton>

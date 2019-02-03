@@ -31,7 +31,7 @@ export default class Column extends React.Component {
 
   render() {
 // Create second <Droppable /> for sequence
-  console.log(this.props.addPose);
+
 
     return (
       <Container>
