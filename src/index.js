@@ -80,6 +80,8 @@ const bodyStyle = `background-color: #f0f0f0;
   // Upon save, switch to edit mode
   // Allow for opening and editing saved flows
 
+  // Edit, Delete, Star/Reorder for pastFlows
+
 
 class App extends React.Component {
 
@@ -97,6 +99,7 @@ class App extends React.Component {
     this.navigate = this.navigate.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.submitTitle = this.submitTitle.bind(this);
+    this.removeFlow = this.removeFlow.bind(this);
   }
 
   handleChange(event) {
@@ -253,6 +256,14 @@ class App extends React.Component {
     }
     itemsRef.push(flow);
     alert('Flow Submitted!');
+    this.setState({
+      dashboard: 'pastsequences',
+    })
+  }
+
+  removeFlow(id) {
+    const itemRef = firebase.database().ref(`/items/${id}`);
+    itemRef.remove();
   }
 
   setTitle(e) {
@@ -287,11 +298,7 @@ class App extends React.Component {
 
 
   onDragUpdate = update => {
-    // const { destination } = update;
-    /* const opacity = destination
-      ? destination.index / Object.keys(this.state.info).length
-      : 0; */
-    // document.body.style.backgroundColor =  `rgba(153, 141, 217, ${opacity})`;
+
   };
 
 
@@ -438,7 +445,7 @@ class App extends React.Component {
 
           {this.state.dashboard === 'pastsequences' &&
             <Container style={{position: 'relative'}}>
-              <PastSequences pastFlows={this.state.pastFlows} />
+              <PastSequences pastFlows={this.state.pastFlows} remover={this.removeFlow} />
               <SaveButton>
                 <button className='btn btn-primary'>Display Flow</button>
               </SaveButton>

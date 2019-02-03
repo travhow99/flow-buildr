@@ -14,6 +14,12 @@ const PastFlow = styled.div`
   vertical-align: middle;
 `;
 
+const RemoveButton = styled.button`
+  position: absolute;
+  bottom: 0;
+  right: 0;
+`;
+
 
 export default class PastSequences extends React.Component {
 
@@ -28,6 +34,7 @@ export default class PastSequences extends React.Component {
                   <PastFlow key={item.id} className='card'>
                     <h4>{item.flowTitle}</h4>
                     <small>{item.creationDate}</small>
+                    <RemoveButton className="btn btn-danger" onClick={() => this.props.remover(item.id)} >X</RemoveButton>
                   </PastFlow>
               )
             })}
