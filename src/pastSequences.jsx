@@ -39,7 +39,9 @@ export default class PastSequences extends React.Component {
                   <PastFlow key={item.id} order={key} className='card'>
                     <h4>{item.flowTitle}</h4>
                     <small>{item.creationDate}</small>
-                    <EditButton className="btn btn-sm btn-primary" onClick={() => this.props.edit(key)}>
+                    <EditButton className="btn btn-sm btn-primary" onClick={() =>
+                      window.confirm("Careful! Editing this flow will erase the flow you have started in flowbuildr.") &&
+                      this.props.edit(key)}>
                       <FaPencilAlt />
                     </EditButton>
                     <RemoveButton className="btn btn-sm btn-danger" onClick={() =>

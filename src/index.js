@@ -15,7 +15,7 @@ import Sequence from './sequence';
 import Dashboard from './dashboard';
 // import Title from './title';
 import PastSequences from './pastSequences';
-import firebase from './firebase.js'; // <--- add this line
+import firebase, { auth, provider } from './firebase.js'; // <--- add this line
 
 //import SidebarSwitch from './sidebarSwitch';
 import uuid from 'uuid/v4';
@@ -78,6 +78,7 @@ const bodyStyle = `background-color: #f0f0f0;
 // Save Option
   // Saves Current Flow, title it
   // Upon save, switch to edit mode
+    // IF
   // Allow for opening and editing saved flows
 
   // Edit, Delete, Star/Reorder for pastFlows
@@ -93,6 +94,7 @@ class App extends React.Component {
     this.state.sidebar = false;
     this.state.titleInput = '';
     this.state.title = '';
+    this.state.user = null;
     this.showSidebar = this.showSidebar.bind(this);
     this.saveFlow = this.saveFlow.bind(this);
     //this.getFlow = this.getFlow.bind(this);
@@ -101,12 +103,28 @@ class App extends React.Component {
     this.submitTitle = this.submitTitle.bind(this);
     this.editFlow = this.editFlow.bind(this);
     this.removeFlow = this.removeFlow.bind(this);
+    this.login = this.login.bind(this);
+    this.logout = this.logout.bind(this);
   }
 
   handleChange(event) {
     this.setState({
       titleInput: event.target.value
     })
+  }
+
+  login() {
+    auth.signInWithPopup(provider)
+      .then((result) => {
+        const user = result.user;
+        this.setState({
+          user
+        });
+      });
+  }
+
+  logout() {
+
   }
 
   submitTitle(event) {
@@ -426,7 +444,7 @@ class App extends React.Component {
     {(this.state.sidebar === true) && <Dashboard getFlow={this.getFlow}  navigate={this.navigate} />}
     <div className={'container-fluid ' + (this.state.sidebar ? "Pushed" : "") }>
     <DashboardContainer className='row'  >
-      <DashboardHeader sidebar={this.state.sidebar}/>
+      <DashboardHeader sidebar={this.state.sidebar} user={this.state.user} login={this.login} logout={this.logout}/>
       <SwitchButton onClick={this.showSidebar} >
         <FaBars style={{ color: "#b3d7ff", height: 45, width: 40, padding: 10, cursor: 'pointer' }} />
       </SwitchButton>
