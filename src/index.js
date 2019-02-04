@@ -124,7 +124,12 @@ class App extends React.Component {
   }
 
   logout() {
-
+    auth.signOut()
+      .then(() => {
+        this.setState({
+          user: null
+        });
+      });
   }
 
   submitTitle(event) {
@@ -308,6 +313,14 @@ class App extends React.Component {
   }
 
   componentDidMount() {
+    /* Keep user logged in */
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        this.setState({ user });
+      }
+    });
+
+
     const itemsRef = firebase.database().ref('items');
     itemsRef.on('value', (snapshot) => {
       let items = snapshot.val();
@@ -464,7 +477,6 @@ class App extends React.Component {
 
               { this.state.columnOrder.map(columnId => {
                 const column = this.state.columns[columnId];
-                console.log(this.state);
                 let info = column.poseIds.map(poseId => this.state.info[poseId]);
                 let flowInfo = column.poseIds.map(poseId => this.state.flowInfo[poseId]);
 
