@@ -329,7 +329,9 @@ class App extends React.Component {
   }
 
   removeFlow(id) {
-    const itemRef = firebase.database().ref(`/user/${id}`);
+    const user = this.state.user.uid;
+
+    const itemRef = firebase.database().ref(`/${user}/${id}`);
     itemRef.remove();
   }
 
@@ -367,6 +369,7 @@ class App extends React.Component {
         this.setState({ user });
       }
 
+      /* Turn this into a function... #TO-DO */
       const userId = this.state.user.uid;
 
       const itemsRef = firebase.database().ref(userId);
