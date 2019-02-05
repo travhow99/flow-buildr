@@ -6,13 +6,16 @@ import GoogleButton from 'react-google-button'
 
 const LoginPortal = styled.div`
   position: absolute;
-  background: #446077;
-  width: 420px;
+  background: #fff;
+  width: 272px;
   height: 300px;
-  color: white;
   left: 0;
   right: 0;
-  margin: 60px auto;
+  margin: 120px auto;
+  padding: 20px 12px;
+  border: 2px solid #446077;
+  border-radius: 5px;
+  box-shadow: 0 1px 4px rgba(0,0,0,.06);
 `;
 
 const center = {
@@ -28,6 +31,8 @@ export default class Login extends React.Component {
   render() {
     return (
     <LoginPortal>
+    <h1>flowBuildr</h1>
+    <p className='lead'>Login to get started, or checkout a demo!</p>
     {this.props.user ?
       <GoogleButton onClick={this.props.logout}>Log Out</GoogleButton>
       :

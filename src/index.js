@@ -284,9 +284,11 @@ class App extends React.Component {
   }
 
   saveFlow() {
+    const user = this.state.user.uid;
+
     const timeStamp = new Date();
     const timeString = timeStamp.toString();
-    const itemsRef = firebase.database().ref('items');
+    const itemsRef = firebase.database().ref(user);
 
     if (!this.state.title || this.state.columns['column-2'].poseIds.length === 0) {
       alert('oops!');
@@ -497,12 +499,12 @@ class App extends React.Component {
 
     return (
     <React.Fragment>
-    {(!this.state.user) && <Login user={this.state.user} login={this.login} logout={this.logout} />}
+    {(!this.state.user) && <Login user={this.state.user} login={this.login} />}
 
     {(this.state.sidebar === true) && <Dashboard getFlow={this.getFlow}  navigate={this.navigate} />}
     <div style={{display: (this.state.user ? 'block' : 'none') }} className={'container-fluid ' + (this.state.sidebar ? "Pushed" : "") }>
     <DashboardContainer className='row'  >
-      <DashboardHeader sidebar={this.state.sidebar} />
+      <DashboardHeader sidebar={this.state.sidebar} logout={this.logout}  />
       <SwitchButton onClick={this.showSidebar} >
         <FaBars style={{ color: "#b3d7ff", height: 45, width: 40, padding: 10, cursor: 'pointer' }} />
       </SwitchButton>
