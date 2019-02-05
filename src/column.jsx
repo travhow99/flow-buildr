@@ -5,12 +5,12 @@ import Pose from './pose';
 
 const Container = styled.div`
   margin: 10px;
+  margin-top: 38px;
   border: 1px solid lightgrey;
   border-radius: 2px;
   width: 280px;
   display: flex;
   flex-direction: column;
-  height: 80vh;
   min-height: 600px;
 `;
 
@@ -31,7 +31,7 @@ export default class Column extends React.Component {
 
   render() {
 // Create second <Droppable /> for sequence
-  console.log(this.props.addPose);
+
 
     return (
       <Container>

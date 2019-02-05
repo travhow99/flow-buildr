@@ -37,9 +37,9 @@ const Sanskrit = styled.div`
 
 const PosePic = styled.div`
   float: right;
-  width: 25px;
-  height: 25px;
-  padding: 4px;
+  width: 30px;
+  height: 30px;
+  padding: 3px;
   border: 1px #c7c3c3 solid;
   background-color: #c7c3c3;
   border-radius: 50%;

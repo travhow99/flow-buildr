@@ -1,0 +1,83 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat|Source+Sans+Pro');
+
+body {
+  font-family: 'Source Sans Pro', sans-serif;
+}
+
+h1, h2, h3, h4, h5 {
+  font-family: 'Montserrat', sans-serif;
+}
+
+h1 {
+  font-size: 42px;
+}
+
+h2 {
+  font-size: 32px;
+}
+
+h3 {
+  font-size: 24px;
+}
+
+p {
+  font-size: 16px;
+}
+
+svg {
+  vertical-align: baseline;
+}
+
+/* Bootstrap Overrides */
+.btn-primary {
+    background-color: #5f89ac;
+    border-color: #5389af;
+}
+
+.btn-primary:hover, .btn-primary:active, .btn-primary:not(:disabled):not(.disabled):active {
+    background-color: #446077;
+    border-color: #364a5a;
+}
+
+.btn-link {
+  padding: 0;
+  margin-left: 4px;
+  color: #5f89aca3;
+}
+
+.menu li {
+  width: fit-content;
+  cursor: pointer;
+}
+
+input::placeholder {
+  color: #5f89aca3;
+}
+
+.title-input {
+  color: #5f89aca3;
+  border: none;
+  border-bottom: 2px solid rgba(169, 213, 255, 0.6);
+}
+
+.title-input:focus {
+  outline: none;
+}
+
+/* Past Flows Stylings */
+.display-item {
+  width: 100%;
+}
+
+.card {
+  position: relative;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  background-color: #fff;
+  border: 1px solid #eceff1;
+  border-radius: .15rem;
+  box-shadow: 0 1px 4px rgba(0,0,0,.06);
+}

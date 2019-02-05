@@ -1,66 +1,187 @@
+import 'bootstrap/dist/css/bootstrap.min.css';
+import $ from 'jquery';
+import Popper from 'popper.js';
+import 'bootstrap/dist/js/bootstrap.bundle.min';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import '@atlaskit/css-reset';
 import styled from 'styled-components';
 import { DragDropContext } from 'react-beautiful-dnd';
 import initialData from './initial-data';
+import Login from './login';
+import DashboardHeader from './dashboardHeader';
+import Welcome from './welcome';
 import Column from './column';
 import Sequence from './sequence';
 import Dashboard from './dashboard';
-//import SaveButton from './saveButton';
-import firebase from './firebase.js'; // <--- add this line
+// import Title from './title';
+import PastSequences from './pastSequences';
+import firebase, { auth, provider } from './firebase.js'; // <--- add this line
 
 //import SidebarSwitch from './sidebarSwitch';
 import uuid from 'uuid/v4';
-import { FaBars } from 'react-icons/fa';
+import { FaBars, FaEdit } from 'react-icons/fa';
 import './App.css';
+import './styles.css';
 
 
 const SwitchButton = styled.div`
-  position: fixed;
+  position: absolute;
+  z-index: 1;
 `;
 
+const DashboardContainer = styled.div`
+/*    height: 100vh;*/
+}`;
+
 const Container = styled.div`
+  width: 100%;
   display: flex;
-  margin-left: 30px;
+  margin-left: 40px;
+  margin-right: 40px;
+  margin-top: -94px;
+  margin-bottom: 40px;
+  height: 720px;
+  box-shadow: rgba(132, 125, 125, 0.92) 0px 2px 15px;
+  padding: 20px;
+  background: white;
+`;
+
+const TitleForm = styled.form`
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  width: fit-content;
+`;
+
+const Title = styled.h2`
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  width: fit-content;
 `;
 
 const SaveButton = styled.div`
-  float: right;
-  background: dodger-blue;
+  position: absolute;
+  right: 20px;
+  bottom: 15px;
 `;
 
+const bodyStyle = `background-color: #f0f0f0;
+    background-image: url("data:image/svg+xml,%3Csvg width='12' height='16' viewBox='0 0 12 16' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4 .99C4 .445 4.444 0 5 0c.552 0 1 .45 1 .99v4.02C6 5.555 5.556 6 5 6c-.552 0-1-.45-1-.99V.99zm6 8c0-.546.444-.99 1-.99.552 0 1 .45 1 .99v4.02c0 .546-.444.99-1 .99-.552 0-1-.45-1-.99V8.99z' fill='%23c36ec9' fill-opacity='0.3' fill-rule='evenodd'/%3E%3C/svg%3E");`
+
 // TO DO 1/4/19
-// Multiply option
-  // ie "shiva squat x3"
 // Templates
   // Sculpt, c1, c2 etc.
 // Group option? Sun A, Sun B
 // Save Option
   // Saves Current Flow, title it
+  // Upon save, switch to edit mode
+    // IF
   // Allow for opening and editing saved flows
+
+  // Edit, Delete, Star/Reorder for pastFlows
 
 
 class App extends React.Component {
+
   state = initialData;
 
   constructor (props) {
     super(props);
-    this.state.dashboard = false;
-    this.showDashboard = this.showDashboard.bind(this);
-    /* No binding necessary for arrow functions
-    this.addPose = this.addPose.bind(this);
-    this.removePose = this.removePose.bind(this);
-    this.addMultiplier = this.addMultiplier.bind(this);
-    this.increaseMultiplier = this.increaseMultiplier.bind(this);
-    */
+    this.state.dashboard = 'welcome';
+    this.state.sidebar = false;
+    this.state.titleInput = '';
+    this.state.title = '';
+    this.state.user = null;
+    this.state.editing = false;
+
+    this.gatherFlows = this.gatherFlows.bind(this);
+    this.showSidebar = this.showSidebar.bind(this);
     this.saveFlow = this.saveFlow.bind(this);
+    //this.getFlow = this.getFlow.bind(this);
+    this.navigate = this.navigate.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.submitTitle = this.submitTitle.bind(this);
+    this.editFlow = this.editFlow.bind(this);
+    this.removeFlow = this.removeFlow.bind(this);
+    this.login = this.login.bind(this);
+    this.logout = this.logout.bind(this);
   }
 
-  showDashboard() {
+  handleChange(event) {
     this.setState({
-      dashboard: !this.state.dashboard,
+      titleInput: event.target.value
+    })
+  }
+
+  login() {
+    auth.signInWithPopup(provider)
+      .then((result) => {
+        const user = result.user;
+        this.setState({
+          user
+        });
+      }).then(() => {
+        const user = this.state.user.uid;
+        const itemsRef = firebase.database().ref(user);
+        itemsRef.on('value', (snapshot) => {
+          let items = snapshot.val();
+          let newState = [];
+          for (let item in items) {
+
+            newState.push({
+              id: item,
+              flowTitle: items[item].flowTitle,
+              flowOrder: items[item].flowOrder,
+              sequenceColumn: items[item].sequenceColumn,
+              creationDate: items[item].submissionTime
+            });
+          }
+          this.setState({
+            pastFlows: newState
+          });
+        });
+      });
+  }
+
+  logout() {
+    auth.signOut()
+      .then(() => {
+        this.setState({
+          user: null,
+          dashboard: 'welcome',
+          sidebar: false,
+          titleInput: '',
+          title: '',
+          editing: false,
+          pastFlows: [],
+          flowInfo: {},
+        });
+      });
+  }
+
+  submitTitle(event) {
+    event.preventDefault();
+    console.log(this.state.titleInput);
+    this.setState({
+      titleInput: '',
+      title: this.state.titleInput,
     });
+  }
+
+  showSidebar() {
+    this.setState({
+      sidebar: !this.state.sidebar,
+    });
+  }
+
+  navigate = (e, id) => {
+    this.setState({
+      dashboard: id
+    })
   }
 
   /* use larger function to add/remove/onDragEnd */
@@ -172,19 +293,116 @@ class App extends React.Component {
   }
 
   saveFlow() {
-    console.log('submitting');
+    const user = this.state.user.uid;
 
     const timeStamp = new Date();
     const timeString = timeStamp.toString();
-    const itemsRef = firebase.database().ref('items');
+    const itemsRef = firebase.database().ref(user);
+
+    if (!this.state.title || this.state.columns['column-2'].poseIds.length === 0) {
+      alert('oops!');
+      return;
+    }
+
+    console.log(this.state.title, this.state.columns['column-2']);
     const flow = {
+      flowTitle: this.state.title,
       flowOrder: this.state.flowInfo,
       sequenceColumn: this.state.columns['column-2'],
       submissionTime: timeString,
-      test: 'test',
     }
-    console.log(flow);
     itemsRef.push(flow);
+    alert('Flow Submitted!');
+    this.setState({
+      dashboard: 'pastsequences',
+    });
+  }
+
+  editFlow(id) {
+    const pastFlow = this.state.pastFlows[id];
+    const column = pastFlow.sequenceColumn.id;
+    console.log(pastFlow.flowOrder);
+    const flowOrder = pastFlow.flowOrder;
+
+    this.setState({
+      title: pastFlow.flowTitle,
+      flowInfo: flowOrder,
+      columns: {
+        ...this.state.columns,
+        [column]: pastFlow.sequenceColumn,
+      },
+      dashboard: 'flowbuildr',
+      editing: true,
+    });
+
+  }
+
+  removeFlow(id) {
+    const user = this.state.user.uid;
+
+    const itemRef = firebase.database().ref(`/${user}/${id}`);
+    itemRef.remove();
+  }
+
+  setTitle(e) {
+    console.log(e.target.value);
+  }
+
+  gatherFlows() {
+    const user = this.state.user.uid;
+
+    const itemsRef = firebase.database().ref(user);
+    itemsRef.on('value', (snapshot) => {
+      let items = snapshot.val();
+      let newState = [];
+      for (let item in items) {
+
+        newState.push({
+          id: item,
+          flowTitle: items[item].flowTitle,
+          flowOrder: items[item].flowOrder,
+          sequenceColumn: items[item].sequenceColumn,
+          creationDate: items[item].submissionTime
+        });
+      }
+      this.setState({
+        pastFlows: newState
+      });
+    });
+  }
+
+  componentDidMount() {
+    /* Keep user logged in */
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        this.setState({ user });
+
+        /* Turn this into a function... #TO-DO */
+        const userId = this.state.user.uid;
+
+        const itemsRef = firebase.database().ref(userId);
+        itemsRef.on('value', (snapshot) => {
+          let items = snapshot.val();
+          let newState = [];
+          for (let item in items) {
+
+            newState.push({
+              id: item,
+              flowTitle: items[item].flowTitle,
+              flowOrder: items[item].flowOrder,
+              sequenceColumn: items[item].sequenceColumn,
+              creationDate: items[item].submissionTime
+            });
+          }
+          this.setState({
+            pastFlows: newState
+          });
+        });
+      }
+    });
+
+
+
   }
 
 
@@ -194,11 +412,7 @@ class App extends React.Component {
 
 
   onDragUpdate = update => {
-    // const { destination } = update;
-    /* const opacity = destination
-      ? destination.index / Object.keys(this.state.info).length
-      : 0; */
-    // document.body.style.backgroundColor =  `rgba(153, 141, 217, ${opacity})`;
+
   };
 
 
@@ -230,16 +444,13 @@ class App extends React.Component {
 
       const poseIndex = source.index;
 
-      console.log(finish, finishPoseIds);
-
       // Use poseIndex to get full object of this.state.info {poseIndex}
 
       const duplicate = {...this.state.info[poseIndex]};
-      console.log(duplicate);
+
       duplicate.id = uuid();
       duplicate.originalId = poseIndex;
       duplicate.multiplied = 0;
-      console.log(duplicate);
 
       finishPoseIds.splice(destination.index, 0, duplicate.id);
 
@@ -257,12 +468,7 @@ class App extends React.Component {
         ...finish,
         poseIds:finishPoseIds,
       };
-      console.log(newFinish);
-
-      console.log(flowKey, duplicate);
-
       /* New state for column-2 */
-      console.log(this.state);
 
 
       const newState = {
@@ -307,33 +513,61 @@ class App extends React.Component {
   };
 
   render() {
+    document.body.style = bodyStyle;
+
 
     return (
     <React.Fragment>
-    {(this.state.dashboard === true) && <Dashboard />}
-    <SwitchButton onClick={this.showDashboard} className={this.state.dashboard ? "Pushed" : "" } >
-      <FaBars style={{ color: "pink", height: 25, width: 25, padding: 10, cursor: 'pointer' }} />
-    </SwitchButton>
-    <div id="dashboardContainer" className={this.state.dashboard ? "Pushed" : "" } >
-        <DragDropContext onDragStart={this.onDragStart} onDragUpdate={this.onDragUpdate} onDragEnd={this.onDragEnd}>
-          <Container>
-            { this.state.columnOrder.map(columnId => {
-              console.log(this.state);
-              const column = this.state.columns[columnId];
-              let info = column.poseIds.map(poseId => this.state.info[poseId]);
-              let flowInfo = column.poseIds.map(poseId => this.state.flowInfo[poseId]);
+    {(!this.state.user) && <Login user={this.state.user} login={this.login} />}
 
-              if (columnId === 'column-1') {
-                return <Column key={column.id} column={column} info={info} addPose={this.addPose} />;
-              } else if (columnId === 'column-2') {
-                return <Sequence key={column.id} column={column} info={flowInfo} removePose={this.removePose} addMultiplier={this.addMultiplier} increaseMultiplier={this.increaseMultiplier} decreaseMultiplier={this.decreaseMultiplier} />;
-              }
-            })}
-          </Container>
-        </DragDropContext>
-        <SaveButton onClick={this.saveFlow}>
-          <button>Save Flow</button>
-        </SaveButton>
+    {(this.state.sidebar === true) && <Dashboard getFlow={this.getFlow}  navigate={this.navigate} />}
+    <div style={{display: (this.state.user ? 'block' : 'none') }} className={'container-fluid ' + (this.state.sidebar ? "Pushed" : "") }>
+    <DashboardContainer className='row'  >
+      <DashboardHeader sidebar={this.state.sidebar} logout={this.logout}  />
+      <SwitchButton onClick={this.showSidebar} >
+        <FaBars style={{ color: "#b3d7ff", height: 45, width: 40, padding: 10, cursor: 'pointer' }} />
+      </SwitchButton>
+        {this.state.dashboard === 'welcome' &&
+          <Container>
+            <Welcome />
+          </Container> }
+
+          {this.state.dashboard === 'flowbuildr' && <DragDropContext onDragStart={this.onDragStart} onDragUpdate={this.onDragUpdate} onDragEnd={this.onDragEnd}>
+            <Container style={{position: 'relative'}}>
+              {this.state.title === '' ? (<TitleForm onSubmit={this.submitTitle}>
+                <input value={this.state.titleInput} onChange={this.handleChange} className='title-input' type="text" placeholder="name this flow" />
+                <button className='btn btn-link' type='submit'>Save</button>
+              </TitleForm>) : (
+                <Title>{this.state.title} <FaEdit /></Title>
+              )}
+
+              { this.state.columnOrder.map(columnId => {
+                const column = this.state.columns[columnId];
+                let info = column.poseIds.map(poseId => this.state.info[poseId]);
+                let flowInfo = column.poseIds.map(poseId => this.state.flowInfo[poseId]);
+
+                if (columnId === 'column-1') {
+                  return <Column key={column.id} column={column} info={info} addPose={this.addPose} />;
+                } else if (columnId === 'column-2') {
+                  return <Sequence key={column.id} column={column} info={flowInfo} removePose={this.removePose} addMultiplier={this.addMultiplier} increaseMultiplier={this.increaseMultiplier} decreaseMultiplier={this.decreaseMultiplier} />;
+                }
+              })}
+              <SaveButton onClick={this.saveFlow}>
+                <button className='btn btn-primary'>Save Flow</button>
+              </SaveButton>
+            </Container>
+          </DragDropContext>
+          }
+
+          {this.state.dashboard === 'pastsequences' &&
+            <Container style={{position: 'relative'}}>
+              <PastSequences pastFlows={this.state.pastFlows} edit={this.editFlow} remover={this.removeFlow} />
+              <SaveButton>
+                <button className='btn btn-primary'>Display Flow</button>
+              </SaveButton>
+            </Container> }
+
+      </DashboardContainer>
       </div>
     </React.Fragment>
   );
