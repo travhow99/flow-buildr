@@ -8,6 +8,7 @@ import '@atlaskit/css-reset';
 import styled from 'styled-components';
 import { DragDropContext } from 'react-beautiful-dnd';
 import initialData from './initial-data';
+import Login from './login';
 import DashboardHeader from './dashboardHeader';
 import Welcome from './welcome';
 import Column from './column';
@@ -95,6 +96,8 @@ class App extends React.Component {
     this.state.titleInput = '';
     this.state.title = '';
     this.state.user = null;
+
+    this.gatherFlows = this.gatherFlows.bind(this);
     this.showSidebar = this.showSidebar.bind(this);
     this.saveFlow = this.saveFlow.bind(this);
     //this.getFlow = this.getFlow.bind(this);
@@ -119,6 +122,25 @@ class App extends React.Component {
         const user = result.user;
         this.setState({
           user
+        });
+      }).then(() => {
+        const itemsRef = firebase.database().ref('items');
+        itemsRef.on('value', (snapshot) => {
+          let items = snapshot.val();
+          let newState = [];
+          for (let item in items) {
+
+            newState.push({
+              id: item,
+              flowTitle: items[item].flowTitle,
+              flowOrder: items[item].flowOrder,
+              sequenceColumn: items[item].sequenceColumn,
+              creationDate: items[item].submissionTime
+            });
+          }
+          this.setState({
+            pastFlows: newState
+          });
         });
       });
   }
@@ -312,6 +334,27 @@ class App extends React.Component {
     console.log(e.target.value);
   }
 
+  gatherFlows() {
+    const itemsRef = firebase.database().ref('items');
+    itemsRef.on('value', (snapshot) => {
+      let items = snapshot.val();
+      let newState = [];
+      for (let item in items) {
+
+        newState.push({
+          id: item,
+          flowTitle: items[item].flowTitle,
+          flowOrder: items[item].flowOrder,
+          sequenceColumn: items[item].sequenceColumn,
+          creationDate: items[item].submissionTime
+        });
+      }
+      this.setState({
+        pastFlows: newState
+      });
+    });
+  }
+
   componentDidMount() {
     /* Keep user logged in */
     auth.onAuthStateChanged((user) => {
@@ -319,7 +362,6 @@ class App extends React.Component {
         this.setState({ user });
       }
     });
-
 
     const itemsRef = firebase.database().ref('items');
     itemsRef.on('value', (snapshot) => {
@@ -339,6 +381,7 @@ class App extends React.Component {
         pastFlows: newState
       });
     });
+
   }
 
 
@@ -454,10 +497,12 @@ class App extends React.Component {
 
     return (
     <React.Fragment>
+    {(!this.state.user) && <Login user={this.state.user} login={this.login} logout={this.logout} />}
+
     {(this.state.sidebar === true) && <Dashboard getFlow={this.getFlow}  navigate={this.navigate} />}
-    <div className={'container-fluid ' + (this.state.sidebar ? "Pushed" : "") }>
+    <div style={{display: (this.state.user ? 'block' : 'none') }} className={'container-fluid ' + (this.state.sidebar ? "Pushed" : "") }>
     <DashboardContainer className='row'  >
-      <DashboardHeader sidebar={this.state.sidebar} user={this.state.user} login={this.login} logout={this.logout}/>
+      <DashboardHeader sidebar={this.state.sidebar} />
       <SwitchButton onClick={this.showSidebar} >
         <FaBars style={{ color: "#b3d7ff", height: 45, width: 40, padding: 10, cursor: 'pointer' }} />
       </SwitchButton>

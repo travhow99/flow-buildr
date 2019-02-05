@@ -39,12 +39,7 @@ export default class DashboardHeader extends React.Component {
           <div style={profile}>
             <span style={{float: 'left', marginRight: 12}}>Welcome,<br />
             Yogi</span>
-            <FaUserCircle style={userStyles} /><br />
-            {this.props.user ?
-              <button className="btn btn-info btn-sm" onClick={this.props.logout}>Log Out</button>
-              :
-              <button className="btn btn-info btn-sm" onClick={this.props.login}>Log In</button>
-            }
+            <FaUserCircle style={userStyles} />
           </div>
         </div>
       </Header>
