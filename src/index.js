@@ -124,7 +124,8 @@ class App extends React.Component {
           user
         });
       }).then(() => {
-        const itemsRef = firebase.database().ref('items');
+        const user = this.state.user.uid;
+        const itemsRef = firebase.database().ref(user);
         itemsRef.on('value', (snapshot) => {
           let items = snapshot.val();
           let newState = [];
@@ -328,7 +329,7 @@ class App extends React.Component {
   }
 
   removeFlow(id) {
-    const itemRef = firebase.database().ref(`/items/${id}`);
+    const itemRef = firebase.database().ref(`/user/${id}`);
     itemRef.remove();
   }
 
@@ -337,7 +338,9 @@ class App extends React.Component {
   }
 
   gatherFlows() {
-    const itemsRef = firebase.database().ref('items');
+    const user = this.state.user.uid;
+
+    const itemsRef = firebase.database().ref(user);
     itemsRef.on('value', (snapshot) => {
       let items = snapshot.val();
       let newState = [];
@@ -363,26 +366,31 @@ class App extends React.Component {
       if (user) {
         this.setState({ user });
       }
-    });
 
-    const itemsRef = firebase.database().ref('items');
-    itemsRef.on('value', (snapshot) => {
-      let items = snapshot.val();
-      let newState = [];
-      for (let item in items) {
+      const userId = this.state.user.uid;
 
-        newState.push({
-          id: item,
-          flowTitle: items[item].flowTitle,
-          flowOrder: items[item].flowOrder,
-          sequenceColumn: items[item].sequenceColumn,
-          creationDate: items[item].submissionTime
+      const itemsRef = firebase.database().ref(userId);
+      itemsRef.on('value', (snapshot) => {
+        let items = snapshot.val();
+        let newState = [];
+        for (let item in items) {
+
+          newState.push({
+            id: item,
+            flowTitle: items[item].flowTitle,
+            flowOrder: items[item].flowOrder,
+            sequenceColumn: items[item].sequenceColumn,
+            creationDate: items[item].submissionTime
+          });
+        }
+        this.setState({
+          pastFlows: newState
         });
-      }
-      this.setState({
-        pastFlows: newState
       });
+
     });
+
+
 
   }
 
