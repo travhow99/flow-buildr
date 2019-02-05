@@ -96,6 +96,7 @@ class App extends React.Component {
     this.state.titleInput = '';
     this.state.title = '';
     this.state.user = null;
+    this.state.editing = false;
 
     this.gatherFlows = this.gatherFlows.bind(this);
     this.showSidebar = this.showSidebar.bind(this);
@@ -150,7 +151,14 @@ class App extends React.Component {
     auth.signOut()
       .then(() => {
         this.setState({
-          user: null
+          user: null,
+          dashboard: 'welcome',
+          sidebar: false,
+          titleInput: '',
+          title: '',
+          editing: false,
+          pastFlows: [],
+          flowInfo: {},
         });
       });
   }
@@ -324,6 +332,7 @@ class App extends React.Component {
         [column]: pastFlow.sequenceColumn,
       },
       dashboard: 'flowbuildr',
+      editing: true,
     });
 
   }
@@ -367,30 +376,29 @@ class App extends React.Component {
     auth.onAuthStateChanged((user) => {
       if (user) {
         this.setState({ user });
-      }
 
-      /* Turn this into a function... #TO-DO */
-      const userId = this.state.user.uid;
+        /* Turn this into a function... #TO-DO */
+        const userId = this.state.user.uid;
 
-      const itemsRef = firebase.database().ref(userId);
-      itemsRef.on('value', (snapshot) => {
-        let items = snapshot.val();
-        let newState = [];
-        for (let item in items) {
+        const itemsRef = firebase.database().ref(userId);
+        itemsRef.on('value', (snapshot) => {
+          let items = snapshot.val();
+          let newState = [];
+          for (let item in items) {
 
-          newState.push({
-            id: item,
-            flowTitle: items[item].flowTitle,
-            flowOrder: items[item].flowOrder,
-            sequenceColumn: items[item].sequenceColumn,
-            creationDate: items[item].submissionTime
+            newState.push({
+              id: item,
+              flowTitle: items[item].flowTitle,
+              flowOrder: items[item].flowOrder,
+              sequenceColumn: items[item].sequenceColumn,
+              creationDate: items[item].submissionTime
+            });
+          }
+          this.setState({
+            pastFlows: newState
           });
-        }
-        this.setState({
-          pastFlows: newState
         });
-      });
-
+      }
     });
 
 
