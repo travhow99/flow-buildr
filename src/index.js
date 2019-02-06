@@ -106,6 +106,7 @@ class App extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.submitTitle = this.submitTitle.bind(this);
     this.editFlow = this.editFlow.bind(this);
+    this.updateFlow = this.updateFlow.bind(this);
     this.removeFlow = this.removeFlow.bind(this);
     this.login = this.login.bind(this);
     this.logout = this.logout.bind(this);
@@ -232,6 +233,8 @@ class App extends React.Component {
 
   removePose = (e, index) => {
 
+    // Remove from flowInfo as well...
+
     // Append (this) to end of 'column-2'
     const column = 'column-2';
     const finish = this.state.columns['column-2'];
@@ -304,7 +307,6 @@ class App extends React.Component {
       return;
     }
 
-    console.log(this.state.title, this.state.columns['column-2']);
     const flow = {
       flowTitle: this.state.title,
       flowOrder: this.state.flowInfo,
@@ -318,11 +320,39 @@ class App extends React.Component {
     });
   }
 
-  editFlow(id) {
+  updateFlow() {
+    // Updating previously saved flow in DB
+    const currentFlowKey = this.state.editing;
+
+    const user = this.state.user.uid;
+
+    const timeStamp = new Date();
+    const timeString = timeStamp.toString();
+    const itemsRef = firebase.database().ref(user + '/' + currentFlowKey);
+
+    const flow = {
+      flowTitle: this.state.title,
+      flowOrder: this.state.flowInfo,
+      sequenceColumn: this.state.columns['column-2'],
+      submissionTime: timeString,
+    }
+
+    itemsRef.set(flow);
+
+    console.log('updating');
+    console.log(itemsRef);
+  }
+
+  editFlow(id, key) {
+
     const pastFlow = this.state.pastFlows[id];
     const column = pastFlow.sequenceColumn.id;
-    console.log(pastFlow.flowOrder);
     const flowOrder = pastFlow.flowOrder;
+
+    // Fix empty past sequences
+    if (!pastFlow.sequenceColumn.poseIds) {
+      pastFlow.sequenceColumn.poseIds = [];
+    }
 
     this.setState({
       title: pastFlow.flowTitle,
@@ -332,7 +362,7 @@ class App extends React.Component {
         [column]: pastFlow.sequenceColumn,
       },
       dashboard: 'flowbuildr',
-      editing: true,
+      editing: key,
     });
 
   }
@@ -552,7 +582,7 @@ class App extends React.Component {
                   return <Sequence key={column.id} column={column} info={flowInfo} removePose={this.removePose} addMultiplier={this.addMultiplier} increaseMultiplier={this.increaseMultiplier} decreaseMultiplier={this.decreaseMultiplier} />;
                 }
               })}
-              <SaveButton onClick={this.saveFlow}>
+              <SaveButton onClick={(this.state.editing ? this.updateFlow : this.saveFlow)}>
                 <button className='btn btn-primary'>Save Flow</button>
               </SaveButton>
             </Container>
