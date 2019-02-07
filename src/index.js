@@ -56,11 +56,7 @@ const TitleForm = styled.form`
 `;
 
 const Title = styled.h2`
-  position: absolute;
-  left: 0;
-  right: 0;
-  margin: 0 auto;
-  width: fit-content;
+  display: inline-block;
 `;
 
 const SaveButton = styled.div`
@@ -76,6 +72,8 @@ const bodyStyle = `background-color: #f0f0f0;
 // Templates
   // Sculpt, c1, c2 etc.
 // Group option? Sun A, Sun B
+// View & Print option
+// Search filter for poses
 // Save Option
   // Saves Current Flow, title it
   // Upon save, switch to edit mode
@@ -101,10 +99,12 @@ class App extends React.Component {
     this.gatherFlows = this.gatherFlows.bind(this);
     this.showSidebar = this.showSidebar.bind(this);
     this.saveFlow = this.saveFlow.bind(this);
+    this.printFlow = this.printFlow.bind(this);
     //this.getFlow = this.getFlow.bind(this);
     this.navigate = this.navigate.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.submitTitle = this.submitTitle.bind(this);
+    this.editTitle = this.editTitle.bind(this);
     this.editFlow = this.editFlow.bind(this);
     this.updateFlow = this.updateFlow.bind(this);
     this.removeFlow = this.removeFlow.bind(this);
@@ -170,6 +170,13 @@ class App extends React.Component {
     this.setState({
       titleInput: '',
       title: this.state.titleInput,
+    });
+  }
+
+  editTitle() {
+    this.setState({
+      titleInput: this.state.title,
+      title: '',
     });
   }
 
@@ -303,7 +310,11 @@ class App extends React.Component {
     const itemsRef = firebase.database().ref(user);
 
     if (!this.state.title || this.state.columns['column-2'].poseIds.length === 0) {
-      alert('oops!');
+      if (
+        !this.state.title) {alert('You must name your flow!');
+      } else if (this.state.columns['column-2'].poseIds.length === 0) {
+        alert('You can\'t submit an empty flow!');
+      }
       return;
     }
 
@@ -329,6 +340,15 @@ class App extends React.Component {
     const timeStamp = new Date();
     const timeString = timeStamp.toString();
     const itemsRef = firebase.database().ref(user + '/' + currentFlowKey);
+
+    if (!this.state.title || this.state.columns['column-2'].poseIds.length === 0) {
+      if (
+        !this.state.title) {alert('You must name your flow!');
+      } else if (this.state.columns['column-2'].poseIds.length === 0) {
+        alert('You can\'t submit an empty flow!');
+      }
+      return;
+    }
 
     const flow = {
       flowTitle: this.state.title,
@@ -365,6 +385,10 @@ class App extends React.Component {
       editing: key,
     });
 
+  }
+
+  printFlow(id) {
+    console.log(id);
   }
 
   removeFlow(id) {
@@ -564,11 +588,15 @@ class App extends React.Component {
 
           {this.state.dashboard === 'flowbuildr' && <DragDropContext onDragStart={this.onDragStart} onDragUpdate={this.onDragUpdate} onDragEnd={this.onDragEnd}>
             <Container style={{position: 'relative'}}>
-              {this.state.title === '' ? (<TitleForm onSubmit={this.submitTitle}>
+              {this.state.title === '' ?
+              (<TitleForm onSubmit={this.submitTitle}>
                 <input value={this.state.titleInput} onChange={this.handleChange} className='title-input' type="text" placeholder="name this flow" />
                 <button className='btn btn-link' type='submit'>Save</button>
               </TitleForm>) : (
-                <Title>{this.state.title} <FaEdit /></Title>
+                <TitleForm className="titled">
+                  <Title>{this.state.title}</Title>
+                  <FaEdit className="edit" onClick={this.editTitle} />
+                </TitleForm>
               )}
 
               { this.state.columnOrder.map(columnId => {
@@ -591,7 +619,7 @@ class App extends React.Component {
 
           {this.state.dashboard === 'pastsequences' &&
             <Container style={{position: 'relative'}}>
-              <PastSequences pastFlows={this.state.pastFlows} edit={this.editFlow} remover={this.removeFlow} />
+              <PastSequences pastFlows={this.state.pastFlows} edit={this.editFlow} remover={this.removeFlow} print={this.printFlow} />
               <SaveButton>
                 <button className='btn btn-primary'>Display Flow</button>
               </SaveButton>

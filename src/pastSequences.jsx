@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import firebase from './firebase.js'; // <--- add this line
-import { FaPencilAlt, FaTrashAlt } from 'react-icons/fa';
+import { FaPencilAlt, FaTrashAlt, FaPrint } from 'react-icons/fa';
 
 const PastFlow = styled.div`
   position: relative;
@@ -25,6 +25,10 @@ const EditButton = styled(RemoveButton)`
   right: 36px;
 `;
 
+const PrintButton = styled(RemoveButton)`
+  right: 72px;
+`;
+
 
 export default class PastSequences extends React.Component {
 
@@ -39,6 +43,9 @@ export default class PastSequences extends React.Component {
                   <PastFlow key={item.id} order={key} className='card'>
                     <h4>{item.flowTitle}</h4>
                     <small>{item.creationDate}</small>
+                    <PrintButton className="btn btn-sm btn-success" onClick={() => this.props.print(item.id)} >
+                      <FaPrint />
+                    </PrintButton>
                     <EditButton className="btn btn-sm btn-primary" onClick={() =>
                       window.confirm("Careful! Editing this flow will erase the flow you have started in flowbuildr.") &&
                       this.props.edit(key, item.id)}>

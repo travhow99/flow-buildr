@@ -35,7 +35,7 @@ export default class DashboardHeader extends React.Component {
       <Header style={{left: this.props.sidebar ? 125 :  0}}>
         <div style={{padding: 40, width: '100%'}}>
           <h1 style={{color: '#b3d7ff'}}>flowbuildr</h1>
-          <h3 style={{color: '#fff'}}>A yoga teacher's best friend</h3>
+          <h3 style={{color: '#fff'}}>A yoga teachers best friend</h3>
           <div style={profile}>
             <span style={{float: 'left', marginRight: 12}}>Welcome,<br />
             Yogi</span>

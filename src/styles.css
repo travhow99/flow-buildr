@@ -54,6 +54,20 @@ input::placeholder {
   color: #5f89aca3;
 }
 
+.titled {
+
+}
+
+.titled:hover .edit {
+  display: inline-block;
+  position: absolute;
+  cursor: pointer;
+}
+
+.edit {
+  display: none;
+}
+
 .title-input {
   color: #5f89aca3;
   border: none;
