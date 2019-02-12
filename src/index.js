@@ -586,7 +586,7 @@ class App extends React.Component {
     {(this.state.sidebar === true) && <Dashboard getFlow={this.getFlow}  navigate={this.navigate} />}
     <div style={{display: (this.state.user ? 'block' : 'none') }} className={'container-fluid ' + (this.state.sidebar ? "Pushed" : "") }>
     {this.state.mounted && <DashboardContainer className='row'  >
-      <DashboardHeader sidebar={this.state.sidebar} userName={this.state.user.displayName} logout={this.logout}  />
+      <DashboardHeader sidebar={this.state.sidebar} userName={this.state.user.displayName} userImg={this.state.user.photoURL} logout={this.logout}  />
       <SwitchButton onClick={this.showSidebar} >
         <FaBars style={{ color: "#b3d7ff", height: 45, width: 40, padding: 10, cursor: 'pointer' }} />
       </SwitchButton>
@@ -607,8 +607,6 @@ class App extends React.Component {
                   <FaEdit className="edit" onClick={this.editTitle} />
                 </TitleForm>
               )}
-              <PoseSearch />
-
               { this.state.columnOrder.map(columnId => {
                 const column = this.state.columns[columnId];
                 let info = column.poseIds.map(poseId => this.state.info[poseId]);

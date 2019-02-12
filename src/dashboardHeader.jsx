@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import '@atlaskit/css-reset';
 import styled from 'styled-components';
-import { FaUserCircle } from 'react-icons/fa';
+import { FaSignOutAlt } from 'react-icons/fa';
 
 
 const Header = styled.div`
@@ -24,7 +24,9 @@ const profile = {
 }
 
 const userStyles = {
-  fontSize: 40,
+  width: 40,
+  height: 40,
+  borderRadius: '50%',
 }
 
 export default class DashboardHeader extends React.Component {
@@ -40,8 +42,9 @@ export default class DashboardHeader extends React.Component {
           <div style={profile}>
             <span style={{float: 'left', marginRight: 12}}>Welcome,<br />
             {userName}</span>
-            <FaUserCircle style={userStyles} /><br />
-            <button className='btn btn-sm' onClick={this.props.logout}>Log Out</button>
+            <img src={this.props.userImg} style={userStyles} />
+            <br />
+            <FaSignOutAlt onClick={this.props.logout} style={{ cursor: 'pointer', color: '#4f5a65', float: 'right', marginTop: 8}} />
           </div>
         </div>
       </Header>

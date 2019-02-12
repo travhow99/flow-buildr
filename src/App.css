@@ -34,6 +34,6 @@
 
 .Pushed {
   margin-left: 125px;
-  max-width: calc(100vw - 125px);
+  max-width: calc(100% - 125px);
   transition: 0.5s;
 }

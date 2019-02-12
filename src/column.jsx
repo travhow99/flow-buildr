@@ -27,7 +27,35 @@ const PoseList = styled.div`
   overflow-y: auto;
 `; //  background-color: ${props => (props.isDraggingOver ? 'pink' : 'white')};
 
+const Search = styled.input`
+
+`;
+
 export default class Column extends React.Component {
+  componentDidMount() {
+    this.setState({columnInfo: this.props.info});
+  }
+
+  filterList = (event) => {
+      var updatedList = this.props.info;
+      console.log(event.target.value);
+
+      let poseNames = updatedList.filter((pose) => {
+        return pose.english_name.toLowerCase().search(
+          event.target.value.toLowerCase()) !== -1;
+      });
+      console.log(poseNames);
+      this.setState({columnInfo: poseNames});
+
+/*
+      updatedList = updatedList.filter(function(item){
+        return item.toLowerCase().search(
+          event.target.value.toLowerCase()) !== -1;
+      });
+
+      this.setState({flowInfo: updatedList});
+      */
+    }
 
   render() {
 // Create second <Droppable /> for sequence
@@ -36,6 +64,7 @@ export default class Column extends React.Component {
     return (
       <Container>
         <Title>{this.props.column.title}</Title>
+        <Search placeholder={'Search for poses...'} onChange={this.filterList} />
         <Droppable droppableId='column-1' isDropDisabled={true}>
           {(provided, snapshot) => (
             <PoseList
