@@ -13,6 +13,7 @@ import DashboardHeader from './dashboardHeader';
 import Welcome from './welcome';
 import Column from './column';
 import Sequence from './sequence';
+import PoseSearch from './poseSearch';
 import Dashboard from './dashboard';
 // import Title from './title';
 import PastSequences from './pastSequences';
@@ -89,6 +90,7 @@ class App extends React.Component {
 
   constructor (props) {
     super(props);
+    this.state.mounted = false;
     this.state.dashboard = 'welcome';
     this.state.sidebar = false;
     this.state.titleInput = '';
@@ -115,7 +117,7 @@ class App extends React.Component {
   handleChange(event) {
     this.setState({
       titleInput: event.target.value
-    })
+    });
   }
 
   login() {
@@ -160,6 +162,7 @@ class App extends React.Component {
           editing: false,
           pastFlows: [],
           flowInfo: {},
+          mounted: false,
         });
       });
   }
@@ -190,6 +193,10 @@ class App extends React.Component {
     this.setState({
       dashboard: id
     })
+  }
+
+  filterPoses = (e, input) => {
+
   }
 
   /* use larger function to add/remove/onDragEnd */
@@ -429,7 +436,10 @@ class App extends React.Component {
     /* Keep user logged in */
     auth.onAuthStateChanged((user) => {
       if (user) {
-        this.setState({ user });
+        this.setState({
+          user,
+          mounted: true,
+        });
 
         /* Turn this into a function... #TO-DO */
         const userId = this.state.user.uid;
@@ -569,15 +579,14 @@ class App extends React.Component {
   render() {
     document.body.style = bodyStyle;
 
-
     return (
     <React.Fragment>
     {(!this.state.user) && <Login user={this.state.user} login={this.login} />}
 
     {(this.state.sidebar === true) && <Dashboard getFlow={this.getFlow}  navigate={this.navigate} />}
     <div style={{display: (this.state.user ? 'block' : 'none') }} className={'container-fluid ' + (this.state.sidebar ? "Pushed" : "") }>
-    <DashboardContainer className='row'  >
-      <DashboardHeader sidebar={this.state.sidebar} logout={this.logout}  />
+    {this.state.mounted && <DashboardContainer className='row'  >
+      <DashboardHeader sidebar={this.state.sidebar} userName={this.state.user.displayName} logout={this.logout}  />
       <SwitchButton onClick={this.showSidebar} >
         <FaBars style={{ color: "#b3d7ff", height: 45, width: 40, padding: 10, cursor: 'pointer' }} />
       </SwitchButton>
@@ -598,6 +607,7 @@ class App extends React.Component {
                   <FaEdit className="edit" onClick={this.editTitle} />
                 </TitleForm>
               )}
+              <PoseSearch />
 
               { this.state.columnOrder.map(columnId => {
                 const column = this.state.columns[columnId];
@@ -625,7 +635,7 @@ class App extends React.Component {
               </SaveButton>
             </Container> }
 
-      </DashboardContainer>
+      </DashboardContainer> }
       </div>
     </React.Fragment>
   );

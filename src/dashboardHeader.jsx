@@ -30,6 +30,7 @@ const userStyles = {
 export default class DashboardHeader extends React.Component {
 
   render() {
+    const userName = this.props.userName.split(' ')[0];
 
     return (
       <Header style={{left: this.props.sidebar ? 125 :  0}}>
@@ -38,7 +39,7 @@ export default class DashboardHeader extends React.Component {
           <h3 style={{color: '#fff'}}>A yoga teachers best friend</h3>
           <div style={profile}>
             <span style={{float: 'left', marginRight: 12}}>Welcome,<br />
-            Yogi</span>
+            {userName}</span>
             <FaUserCircle style={userStyles} /><br />
             <button className='btn btn-sm' onClick={this.props.logout}>Log Out</button>
           </div>
