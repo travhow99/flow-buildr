@@ -32,8 +32,13 @@ const Search = styled.input`
 `;
 
 export default class Column extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {columnInfo: this.props.info};
+  }
+
   componentDidMount() {
-    this.setState({columnInfo: this.props.info});
+    /*this.setState({columnInfo: this.props.info});*/
   }
 
   filterList = (event) => {
@@ -59,6 +64,7 @@ export default class Column extends React.Component {
 
   render() {
 // Create second <Droppable /> for sequence
+  console.log(this.state);
 
 
     return (
@@ -72,7 +78,7 @@ export default class Column extends React.Component {
               {...provided.droppableProps}
               isDraggingOver={snapshot.isDraggingOver}
             >
-              {this.props.info.map((pose, index) => (
+              {this.state.columnInfo.map((pose, index) => (
                 <Pose key={pose.id} pose={pose} index={index} parent='column-1' addPose={this.props.addPose}/>
               ))}
               {provided.placeholder}
