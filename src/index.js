@@ -546,9 +546,16 @@ class App extends React.Component {
 
     // If moving from bank to flow
     if (start !== finish) {
+
+
       const finishPoseIds = Array.from(finish.poseIds);
 
-      const poseIndex = source.index;
+      let filteredInfo = this.state.filteredInfo;
+
+      const poseIndex = (filteredInfo ? filteredInfo[source.index] : source.index);
+
+      //const poseIndex = source.index;
+      console.log(poseIndex);
 
       // Use poseIndex to get full object of this.state.info {poseIndex}
 
