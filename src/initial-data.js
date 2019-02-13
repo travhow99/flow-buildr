@@ -33,6 +33,7 @@ initialData['flowInfo'] = {};
 
 
 for (let key in initialData['info']) {
+  initialData['info'][key].originalId = Number(key);
   initialData['info'][key].id = uuid();
 }
 

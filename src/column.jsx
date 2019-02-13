@@ -37,40 +37,13 @@ export default class Column extends React.Component {
     this.state = {columnInfo: this.props.info};
   }
 
-  componentDidMount() {
-    /*this.setState({columnInfo: this.props.info});*/
-  }
-
-  filterList = (event) => {
-      var updatedList = this.props.info;
-      console.log(event.target.value);
-
-      let poseNames = updatedList.filter((pose) => {
-        return pose.english_name.toLowerCase().search(
-          event.target.value.toLowerCase()) !== -1;
-      });
-      console.log(poseNames);
-      this.setState({columnInfo: poseNames});
-
-/*
-      updatedList = updatedList.filter(function(item){
-        return item.toLowerCase().search(
-          event.target.value.toLowerCase()) !== -1;
-      });
-
-      this.setState({flowInfo: updatedList});
-      */
-    }
-
   render() {
 // Create second <Droppable /> for sequence
-  console.log(this.state);
-
 
     return (
       <Container>
         <Title>{this.props.column.title}</Title>
-        <Search placeholder={'Search for poses...'} onChange={this.filterList} />
+        <Search placeholder={'Search for poses...'} onChange={this.props.filter} />
         <Droppable droppableId='column-1' isDropDisabled={true}>
           {(provided, snapshot) => (
             <PoseList
@@ -78,7 +51,7 @@ export default class Column extends React.Component {
               {...provided.droppableProps}
               isDraggingOver={snapshot.isDraggingOver}
             >
-              {this.state.columnInfo.map((pose, index) => (
+              {this.props.info.map((pose, index) => (
                 <Pose key={pose.id} pose={pose} index={index} parent='column-1' addPose={this.props.addPose}/>
               ))}
               {provided.placeholder}

@@ -195,18 +195,58 @@ class App extends React.Component {
     })
   }
 
-  filterPoses = (e, input) => {
+  filterPoses = (event) => {
+    let list = this.state.info;
+      let updatedList = Object.keys(list).map(i => list[i]);
+      console.log(updatedList);
 
-  }
+      const indices = [];
+
+
+      let poseNames = updatedList.filter((pose) => {
+
+
+        if (pose.english_name.toLowerCase().search(    event.target.value.toLowerCase()) !== -1) {
+          indices.push(pose.originalId);
+        }
+
+        return pose.english_name.toLowerCase().search(
+          event.target.value.toLowerCase()) !== -1;
+      });
+
+      console.log(indices);
+
+      // similar function to update poseIds
+
+      console.log(poseNames);
+      this.setState({
+        filteredColumn: poseNames,
+        filteredInfo: indices,
+      });
+
+/*
+      updatedList = updatedList.filter(function(item){
+        return item.toLowerCase().search(
+          event.target.value.toLowerCase()) !== -1;
+      });
+
+      this.setState({flowInfo: updatedList});
+      */
+    }
+
 
   /* use larger function to add/remove/onDragEnd */
 
   addPose = (e, index) => {
+    console.log(index);
     // Append (this) to end of 'column-2'
+
+    let filteredInfo = this.state.filteredInfo;
+
     const column = 'column-2';
     const finish = this.state.columns['column-2'];
     const finishPoseIds = Array.from(finish.poseIds);
-    const poseIndex = index;
+    const poseIndex = (filteredInfo ? filteredInfo[index] : index);
     const duplicate = {...this.state.info[poseIndex]};
 
     duplicate.id = uuid();
@@ -366,8 +406,10 @@ class App extends React.Component {
 
     itemsRef.set(flow);
 
-    console.log('updating');
-    console.log(itemsRef);
+    alert('Flow Saved!');
+    this.setState({
+      dashboard: 'pastsequences',
+    });
   }
 
   editFlow(id, key) {
@@ -608,12 +650,14 @@ class App extends React.Component {
                 </TitleForm>
               )}
               { this.state.columnOrder.map(columnId => {
+                const filteredColumn = this.state.filteredColumn;
                 const column = this.state.columns[columnId];
+
                 let info = column.poseIds.map(poseId => this.state.info[poseId]);
                 let flowInfo = column.poseIds.map(poseId => this.state.flowInfo[poseId]);
 
                 if (columnId === 'column-1') {
-                  return <Column key={column.id} column={column} info={info} addPose={this.addPose} />;
+                  return <Column key={column.id} column={column} info={filteredColumn ? filteredColumn : info} addPose={this.addPose} filter={this.filterPoses} />;
                 } else if (columnId === 'column-2') {
                   return <Sequence key={column.id} column={column} info={flowInfo} removePose={this.removePose} addMultiplier={this.addMultiplier} increaseMultiplier={this.increaseMultiplier} decreaseMultiplier={this.decreaseMultiplier} />;
                 }
