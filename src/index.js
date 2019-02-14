@@ -165,6 +165,8 @@ class App extends React.Component {
           pastFlows: [],
           flowInfo: {},
           mounted: false,
+          filteredColumn: [],
+          filteredInfo: [],
         });
       });
   }
