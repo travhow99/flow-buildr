@@ -75,6 +75,8 @@ const bodyStyle = `background-color: #f0f0f0;
 // Group option? Sun A, Sun B
 // View & Print option
 // Search filter for poses
+  // Don't save column-1 order (at least if filtered)
+
 // Save Option
   // Saves Current Flow, title it
   // Upon save, switch to edit mode
@@ -191,8 +193,14 @@ class App extends React.Component {
 
   navigate = (e, id) => {
     this.setState({
-      dashboard: id
+      dashboard: id,
     })
+    if (id !== 'flowbuildr') {
+      this.setState({
+        filteredColumn: [],
+        filteredInfo: [],
+      })
+    }
   }
 
   filterPoses = (event) => {
@@ -409,6 +417,7 @@ class App extends React.Component {
     alert('Flow Saved!');
     this.setState({
       dashboard: 'pastsequences',
+
     });
   }
 
@@ -432,6 +441,8 @@ class App extends React.Component {
       },
       dashboard: 'flowbuildr',
       editing: key,
+      filteredColumn: [],
+      filteredInfo: [],
     });
 
   }
@@ -657,14 +668,22 @@ class App extends React.Component {
                 </TitleForm>
               )}
               { this.state.columnOrder.map(columnId => {
-                const filteredColumn = this.state.filteredColumn;
-                const column = this.state.columns[columnId];
+                let info;
+                let column = this.state.columns[columnId];
 
-                let info = column.poseIds.map(poseId => this.state.info[poseId]);
+                if (this.state.filteredColumn && this.state.filteredColumn.length >= 1) {
+                  info = this.state.filteredColumn;
+                } else {
+                  info = column.poseIds.map(poseId => this.state.info[poseId]);
+                }
+
+
+
+
                 let flowInfo = column.poseIds.map(poseId => this.state.flowInfo[poseId]);
 
                 if (columnId === 'column-1') {
-                  return <Column key={column.id} column={column} info={filteredColumn ? filteredColumn : info} addPose={this.addPose} filter={this.filterPoses} />;
+                  return <Column key={column.id} column={column} info={info} addPose={this.addPose} filter={this.filterPoses} />;
                 } else if (columnId === 'column-2') {
                   return <Sequence key={column.id} column={column} info={flowInfo} removePose={this.removePose} addMultiplier={this.addMultiplier} increaseMultiplier={this.increaseMultiplier} decreaseMultiplier={this.decreaseMultiplier} />;
                 }
