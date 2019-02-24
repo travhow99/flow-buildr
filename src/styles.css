@@ -95,3 +95,9 @@ input::placeholder {
   border-radius: .15rem;
   box-shadow: 0 1px 4px rgba(0,0,0,.06);
 }
+
+/* Nice Hover effect */
+.hover:hover {
+    box-shadow: 0 3px 10px -3px rgba(0,0,0,0.6);
+    transition: box-shadow 0.28s ease-in;
+}
