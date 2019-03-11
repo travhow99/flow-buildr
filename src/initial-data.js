@@ -11,15 +11,7 @@ const refinedData = poseData.map(function(yogaPose){
 
 
 const initialData = {
-  mounted: false,
-  dashboard: 'welcome',
-  sidebar: false,
-  titleInput: '',
-  title: '',
-  user: null,
-  filteredColumn: [],
-  filteredInfo: [],
-  editing: '',
+  dashboard: false,
   columns: {
     'column-1': {
       id: 'column-1',

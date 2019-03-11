@@ -92,6 +92,13 @@ class App extends React.Component {
 
   constructor (props) {
     super(props);
+    this.state.mounted = false;
+    this.state.dashboard = 'welcome';
+    this.state.sidebar = false;
+    this.state.titleInput = '';
+    this.state.title = '';
+    this.state.user = null;
+    this.state.editing = false;
 
     this.gatherFlows = this.gatherFlows.bind(this);
     this.showSidebar = this.showSidebar.bind(this);
@@ -107,10 +114,6 @@ class App extends React.Component {
     this.removeFlow = this.removeFlow.bind(this);
     this.login = this.login.bind(this);
     this.logout = this.logout.bind(this);
-  }
-
-  stateReset() {
-    this.setState(initialData);
   }
 
   handleChange(event) {
@@ -152,7 +155,19 @@ class App extends React.Component {
   logout() {
     auth.signOut()
       .then(() => {
-        this.setState(this.stateReset());
+        this.setState({
+          user: null,
+          dashboard: 'welcome',
+          sidebar: false,
+          titleInput: '',
+          title: '',
+          editing: false,
+          pastFlows: [],
+          flowInfo: {},
+          mounted: false,
+          filteredColumn: [],
+          filteredInfo: [],
+        });
       });
   }
 
