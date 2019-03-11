@@ -237,11 +237,14 @@ class App extends React.Component {
     // Append (this) to end of 'column-2'
 
     let filteredInfo = this.state.filteredInfo;
+    console.log(filteredInfo);
 
     const column = 'column-2';
     const finish = this.state.columns['column-2'];
     const finishPoseIds = Array.from(finish.poseIds);
-    const poseIndex = (filteredInfo ? filteredInfo[index] : index);
+    const poseIndex = (filteredInfo.length > 1 ? filteredInfo[index] : index);
+
+    console.log(poseIndex);
     const duplicate = {...this.state.info[poseIndex]};
 
     duplicate.id = uuid();
@@ -553,7 +556,7 @@ class App extends React.Component {
 
       let filteredInfo = this.state.filteredInfo;
 
-      const poseIndex = (filteredInfo ? filteredInfo[source.index] : source.index);
+      const poseIndex = (filteredInfo.length > 1 ? filteredInfo[source.index] : source.index);
 
       //const poseIndex = source.index;
       console.log(poseIndex);
