@@ -385,6 +385,8 @@ class App extends React.Component {
     alert('Flow Submitted!');
     this.setState({
       dashboard: 'pastsequences',
+      filteredInfo: [],
+      filteredColumn: [],
     });
   }
 
@@ -419,7 +421,8 @@ class App extends React.Component {
     alert('Flow Saved!');
     this.setState({
       dashboard: 'pastsequences',
-
+      filteredInfo: [],
+      filteredColumn: [],
     });
   }
 
